@@ -1,6 +1,6 @@
 main:
   - title: Welcome
-    url: /index/
+    url: /about/
   - title: Functionalities
     url: /functions/
      - title: Retrieve
