@@ -2,6 +2,7 @@
 layout: default 
 title: Retrievie
 parent: \functions\
+nav_order: 3
 permanent: \retrieve\ 
 ---
 
