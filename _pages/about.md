@@ -9,7 +9,7 @@ permalink: /about/
 
 {: .no_toc}
 
-<details markdown="block">
+<details open markdown="block">
   <summary>
     Table of contents
   </summary>
