@@ -1,9 +1,8 @@
 ---
 layout: default
-title: Home
+title: Functionalities
 nav_order: 1
-description: "Just the Docs is a responsive Jekyll theme with built-in search that is easily customizable and hosted on GitHub Pages."
-permalink: /
+permalink: /functions/
 ---
 
 A short and single line in R produces a complex figure with various information: the generic
