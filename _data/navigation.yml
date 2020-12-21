@@ -3,11 +3,7 @@ main:
     url: /about/
   - title: Functionalities
     url: /functions/
-  - title: Data Handling  
-    url: /data/
-  - title: Contact
-    url : /contact/
-
+  
 page_links:
   - title: Pages
     children:
