@@ -5,8 +5,6 @@ nav_order: 3
 permalink: /functions/
 ---
 
-{: .no_toc }
-
 <details markdown="block">
   <summary>
     Table of contents
