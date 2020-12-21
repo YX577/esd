@@ -1,7 +1,10 @@
 ---
+layout:Default
 permalink: /about/
 title: "About Empirical-Statistical Downscaling"
+navorder 
 ---
+
 # Introduction
 
 ## The need for climate information
