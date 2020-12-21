@@ -57,11 +57,6 @@ of the ‘esd’ package.
 The sample data includes also a meta-data object (`stationmeta`) that can be loaded directly and contains meta data such as name of the location (`loc`) and its standard ientification number (`stid`), geographical coordinates such as longitude (`lon`), latitude (`lat`), and altitude (`alt`), country name (`country`), parameter name (`param`) of recorded weather variables (e.g. temperature and precipitation), data source (`src`) or provider for thousands of stations all over the world (Figures 1 and 2).
 These meta-data have been imported from existing meta data from the different data source providers. It has to be noted also that most of the available stations are managed by the World Meteorological Organisation (WMO) and made available by the American National Climate Data Centre (NCDC) for scientific research only. The meta data has been merged from the different sources mentioned earlier. Also, other additional data sources can be easily included into the package.
 
-SOURCE(S) :  ECAD/GHCND/METNOD/METNOM/NACD/NORDKLIM
-PRECIP/
-97202
-2014 / 1854
-ESD package − map.station() − MET Norway 2014 (www.met.no)
 Figure 2: Map of available weather stations recording precipitation that are included in the meta-data of the ‘esd’ package.
 
 There are two ways of obtaining station data using `station()` method. The first option, which we recommend, is to select a subset of stations from the meta data using the function `select.station()` from a set of criteria. Among these criteria, the minimum length of the recorded data (‘nmin’) can be specified to get, for instance, a subset of stations recording for at least a minimum number of (e.g. 100) years of data (e.g. `select.station(nmin=100)`). Thus, a subsample of the meta data is returned and can be checked for duplications of stations from the various sources. Afterwards, users can start downloading the data for the selected stations. It has to be mentioned that the downloading process for the GHCN and ECA&D is different as the data is stored differently. For the GHCN data sets, each station is stored separately and a direct retrieval can be made. We highly recommend that users perform a prior selection of stations for the GHCN data sets before starting the downloading process. For the ECA&D data sets on the other hand, all stations are downloaded and stored locally as zip files at first call, after which data is extracted for the selection of stations. Other data sets, such as the NACD (Frich et al., 1996), NARP (Førland ), and Nordklim (Tuomenvirta et al., 2001) are stored entirely in ‘esd’ (only holds monthly values of a limited set).
@@ -75,7 +70,7 @@ Most data objects handled by ‘esd’ are typically time series, and hence base
 Data on sub-daily scales may be represented in the ‘day’ class but the ‘esd’ tool has not been tested yet for this time scale. The way R handles different classes and objects can sometimes be confusing. The first element in a list of different classes is used to identify the appropriate method to be used for that specific object. For instance, if a data object belongs to the classes (‘field’,‘zoo’), then, appropriate methods for ‘field’ objects are used rather than those for
 the ’zoo’ objects. Different types of data objects are processed and handled differently, and the way ‘esd’ keeps track of the different types is through the so-called ‘S3-method’ and classes. The ‘esd’ tool follows the same R programming functionalities and uses the first element of the class of an object to define the appropriate method to be used. The built-in R functions `class` and `inherits` are used to check whether an object inherits from any of the classes specified in the ‘esd’ package. 
 
-Example 2.2 shows some of the classes used in ‘esd’.
+### Example 2.2 shows some of the classes used in ‘esd’.
 
 The different data objects come bundled with relevant meta-data, stored as data attributes. These are shown using the `str`*ucture function, as displayed in Example 2.3 for a station object.
 The various attributes have different functions, e.g. for handling the data, traceability, identification, and visualisation. The idea is that they are based on a standard terminology for which the terms are commonly agreed on and follow standard definitions. A common core set of attributes will make it easier to share data and methods. The attribute `history` contains the call(s) (`call`), time stamp(s), and session info that have been used to create and process the data itself.
@@ -86,7 +81,7 @@ provide more tailor-made information. Example 2.4 shows summary statistics for e
 month of a daily station object.
 
 ### Example 2.1.
-```bash
+```R
 # Select a station across India recording daily maximum temperature
 # from the global historical climate network-daily
 ss <- select.station(cntr=’India’,param=’tmax’,src=’ghcnd’)
@@ -108,7 +103,7 @@ ya <- subset(ya,it=c(1970,2012))
 plot(ya,ylim=c(29.5,32.5))
 # Add the linear trend as
 lines(trend(ya),col="red",lwd=2)
-`
+```
 
 Figure 3: Map showing available stations across India from the GHCN-D dataset and b) a plot of
 the annual maximum temperature recorded at New Delhi weather station (blue point) including
@@ -178,12 +173,11 @@ Date[1:41611], format: "1900-01-01" "1900-01-02" "1900-01-03" "1900-01-04" ...
 ```
 
 ### Example 2.4.
-```bash
+```R
 ## Load data for Ferder
 > data(ferder)
 ## Display the summary of statistics
 > summary(ferder)
-
 ```
 
 
@@ -237,8 +231,8 @@ The function ‘map’ is also an S3 built method and used to produce a map of g
 ### Function ‘vec’
 The function vec plots vectors of a 2D flow field (Example 2.7, Figure 6).
 
-Example 2.5.
-```bash
+### Example 2.5.
+```R
 # Load bjornholt data set
 data(bjornholt)
 # plot the time series
@@ -249,7 +243,7 @@ map(bjornholt)
 
 Figure 4: Example of a station (a) and a map plot (b) for a single station ‘Bjornholt’.
 
-Example 2.6.
+### Example 2.6.
 ```bash
 #Get NCEP 2m air temperature for the selected spatial window defined by lon and lat
 t2m <- t2m.NCEP(lon=c(-30,30),lat=c(40,70))
@@ -261,7 +255,7 @@ plot(X)
 
 Figure 5: An example of a plot results for an EOF object.
 
-Example 2.7.
+### Example 2.7.
 ```bash
 # Load 10m zonal and meridional wind components
 u10 <- retrieve(’data/ERAINT/eraint_elnino.nc’,param=’u10’)
@@ -281,7 +275,7 @@ The information stored in climate data can be extracted in various ways, with em
 The second diagram, ‘wheel’, emphasises the time of the year when the most extreme events have taken place, and ‘climvar’ to the right shows how the year-to-year variance varies with season with a minimum in late summer. The ‘diagram’ method can also be used to view the data by comparing day-by-day values of the present temperature with those of the previous years. The figure shows that there have been some exceptionally mild autumn temperatures in 2014. Other functions for making info-graphics include `vis.*`, which make alternative graphics output displaying different information. Trends can be estimated by linear regression using the simple ‘trend’ function. An alternative trend analysis can be done using the function ‘vis.trends’ which estimates linear regressions for sliding periods of various lengths (Example 2.9, Figure 8). The results are presented visually with the strength of the trends shown as a colour scale on a grid where the x- and y-axes represent the starting point and the length of each period, respectively. Periods with statistically significant trends are marked with black outlines. The advantage of `vis.trends` is that it shows trends of various time scales, considering all variations of start- and end-points. The longest period is found in the upper left corner, representing the full length of the time series. The most recent period is shown in the bottom right corner. As demonstrated in Example 2.9,
 the strength and significance of estimated trends are sensitive to the period considered. The multiple period trend analysis is therefore a more robust alternative to single period trend fitting.
 
-Example 2.8.
+#### Example 2.8.
 ```bash
 # Get 2m temperature data for Oslo
 # (works within MET Norway firewall only)
@@ -302,7 +296,7 @@ diagram(x)
 
 Figure 7: Examples of ‘cumugram’, ‘wheel’, ‘climvar’, and ‘diagram’ plots. The ‘cumugram’ shows how the mean value of some variable has evolved from the start of the year and compares this curve to previous years. The graphics produced by ‘wheel’, on the other hand, emphasises how the seasonal variations affect the variable, e.g. whether some extremes tend to be associated with a specific season. Panel c shows results produced by ‘climvar’ shows the year-to-year statistics for a variable, e.g. the standard deviation of the temperature on February 1st. The ‘diagram’ method can be used in different context, and for a ‘station’ object, it produces graphics that compare the day-to-day values with those of previous years.
 
-# Example 2.9.
+#### Example 2.9.
 ```bash
 # Get 2m temperature data for Ferder and calculate annual mean
 data(ferder)
