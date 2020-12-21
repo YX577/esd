@@ -1,5 +1,5 @@
 ---
-layout:Default
+layout: Default
 title: About Empirical-Statistical Downscaling
 nav_order: 1 
 permalink: /about/
