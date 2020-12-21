@@ -113,6 +113,6 @@ defaults:
         - title: ""
           nav: page_links
 
-aux_links:
-  "esd on GitHub":
-    - "//github.com/metno/esd"
+#aux_links:
+#  "esd on GitHub":
+#    - "//github.com/metno/esd"
