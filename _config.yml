@@ -85,34 +85,6 @@ footer:
       icon: "fas fa-fw fa-water"
       url: "https://met.no/"
       
-defaults:
-  # _posts
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: single
-      author_profile: true
-      read_time: true
-      comments: false
-      share: true
-      related: true
-  # _pages
-  - scope:
-      path: "_pages"
-      type: pages
-    values:
-      layout: single
-      author_profile: false
-      toc: true
-      toc_icon: bars
-      toc_label: "Contents"
-      header:
-        overlay_color: "#2073ac"
-      sidebar:
-        - title: ""
-          nav: page_links
-
 aux_links:
   "esd on GitHub":
     - "//github.com/metno/esd"
