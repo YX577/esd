@@ -224,14 +224,14 @@ maps one data set onto the data space of another.
 
 ## Data visualisation
 The main data visualisation is provided through plot and map methods, but there are other more specific methods for producing additional graphs.
-### Function ‘plot’ 
+### Function `plot()` 
 The ‘plot’ method in ‘esd’ extends the S3 plot methods from package ‘graphics’ to new ‘esd’ classes (Table 1). ‘plot(x)’ and ‘plot.station(x)’ are equivalent if ‘x’ is an object of class ‘station’.
 Various plotting outputs are generated depending on the class of the objects used as inputs. For instance, the ‘plot.station(x)’ function produces a figure based on the default ‘graphics’ and ‘zoo’ plots but adapted for the station object (Figure 4a). For some classes, plot can produce several or a combination of plots giving more description of the output. The argument ’plot.type’ is also used to distinguish between single or multiple plots in one window. The ‘plot’ function also inherits all graphical parameters from ‘par’ with additional parameters used by ‘esd’. An example of the function ‘plot’ applied to a station object is shown in Example 2.5 and Figure 4a. Although the plot itself gets more complicated for EOFs, the syntax remains as simple as for the station object (Example 2.6, Figure 5).
 
-### Function ‘map’
+### Function `map()`
 The function ‘map’ is also an S3 built method and used to produce a map of geographical and geophysical data points and gridded data. ‘map’ can be seen as a spatial plotting method, while plot is mainly used for time series. Unlike ‘plot’, ‘map’ is proper to ‘esd’ and is an S3 method and do not extend the existing ‘map’ function from package ‘maps’ (http://CRAN.R-project.org/package=maps), which too works for the different ‘esd’ objects. When applied to one single station, map plots its location (Example 2.5, Figure 4b).
 
-### Function ‘vec’
+### Function `vec()`
 The function vec plots vectors of a 2D flow field (Example 2.7, Figure 6).
 
 ### Example 2.5.
