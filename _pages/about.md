@@ -7,6 +7,8 @@ permalink: /about/
 
 # Introduction
 
+{: .no_toc}
+
 <details markdown="block">
   <summary>
     Table of contents
