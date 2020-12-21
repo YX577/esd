@@ -6,6 +6,8 @@ has_toc: true
 permalink: /about/
 ---
 
+{:toc}
+
 # Introduction
 
 ## The need for climate information
