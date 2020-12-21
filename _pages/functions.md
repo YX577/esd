@@ -88,7 +88,7 @@ provide more tailor-made information. Example 2.4 shows summary statistics for e
 month of a daily station object.
 
 ### Example 2.1.
-`
+```bash
 # Select a station across India recording daily maximum temperature
 # from the global historical climate network-daily
 ss <- select.station(cntr=’India’,param=’tmax’,src=’ghcnd’)
@@ -243,7 +243,7 @@ the annual maximum temperature recorded at New Delhi weather station (blue point
 linear trend line.
 
 ### Example 2.2.
-```
+```bash
 # Example of monthly station data:
 > data(Oslo)
 > class(Oslo)
@@ -306,7 +306,7 @@ Date[1:41611], format: "1900-01-01" "1900-01-02" "1900-01-03" "1900-01-04" ...
 ```
 
 ### Example 2.4.
-```
+```bash
 ## Load data for Ferder
 > data(ferder)
 ## Display the summary of statistics
