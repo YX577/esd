@@ -87,7 +87,8 @@ The S3 method ‘summary’ has been extended to the classes defined in ‘esd�
 provide more tailor-made information. Example 2.4 shows summary statistics for each calendar
 month of a daily station object.
 
-Example 2.1.
+### Example 2.1.
+`
 # Select a station across India recording daily maximum temperature
 # from the global historical climate network-daily
 ss <- select.station(cntr=’India’,param=’tmax’,src=’ghcnd’)
@@ -235,11 +236,14 @@ THI
 2000
 2010
 NEW DELHI/S: 77.2E/28.58N (216 masl)
+`
+
 Figure 3: Map showing available stations across India from the GHCN-D dataset and b) a plot of
 the annual maximum temperature recorded at New Delhi weather station (blue point) including
 linear trend line.
 
-Example 2.2.
+### Example 2.2.
+```
 # Example of monthly station data:
 > data(Oslo)
 > class(Oslo)
@@ -299,8 +303,10 @@ Data: atomic [1:41611] 2.1 -1.8 -0.9 -3 -7.2 -6.5 -2.6 -2.4 -1.6 -0.3 ...
 : chr "x86_64-pc-linux-gnu (64-bit)"
 Index:
 Date[1:41611], format: "1900-01-01" "1900-01-02" "1900-01-03" "1900-01-04" ...
-11
-Example 2.4.
+```
+
+### Example 2.4.
+```
 ## Load data for Ferder
 > data(ferder)
 ## Display the summary of statistics
@@ -384,6 +390,9 @@ Dec -15.6
 9.7
 29
 12
+```
+
+
 Table 1: Data objects in ‘esd’ are determined by a set of classes, listed in this table. This may
 be extended in the future to include radiosonde and radar data objects.
 ‘station’
