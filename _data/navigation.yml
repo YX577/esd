@@ -3,6 +3,8 @@ main:
     url: /index/
   - title: Functionalities
     url: /functions/
+     - title: Retrieve
+       url: /retrieve/
   - title: Data Handling  
     url: /data/
   - title: Contact
@@ -11,10 +13,10 @@ main:
 page_links:
   - title: Pages
     children:
-    - title: About WeaMyL
+    - title: About ESD
       url: /about/
-    - title: Dissemination
-      url: /dissemination/
+    - title: Functionalities
+      url: /function/
     - title: Partners
       url: /partners/
     - title: Contact
