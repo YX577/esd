@@ -1,6 +1,6 @@
 ---
 layout: default 
-title: Retrievie
+title: Retrieve
 parent: Functionalities
 nav_order: 2
 permanent: \retrieve\ 
