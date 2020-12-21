@@ -110,7 +110,7 @@ the annual maximum temperature recorded at New Delhi weather station (blue point
 linear trend line.
 
 ### Example 2.2.
-```bash
+```R
 # Example of monthly station data:
 > data(Oslo)
 > class(Oslo)
@@ -244,7 +244,7 @@ map(bjornholt)
 Figure 4: Example of a station (a) and a map plot (b) for a single station ‘Bjornholt’.
 
 ### Example 2.6.
-```bash
+```R
 #Get NCEP 2m air temperature for the selected spatial window defined by lon and lat
 t2m <- t2m.NCEP(lon=c(-30,30),lat=c(40,70))
 # Computes the EOFs
@@ -256,7 +256,7 @@ plot(X)
 Figure 5: An example of a plot results for an EOF object.
 
 ### Example 2.7.
-```bash
+```R
 # Load 10m zonal and meridional wind components
 u10 <- retrieve(’data/ERAINT/eraint_elnino.nc’,param=’u10’)
 v10 <- retrieve(’data/ERAINT/eraint_elnino.nc’,param=’v10’)
@@ -276,7 +276,7 @@ The second diagram, ‘wheel’, emphasises the time of the year when the most e
 the strength and significance of estimated trends are sensitive to the period considered. The multiple period trend analysis is therefore a more robust alternative to single period trend fitting.
 
 #### Example 2.8.
-```bash
+```R
 # Get 2m temperature data for Oslo
 # (works within MET Norway firewall only)
 x <- station(stid=18700,param=’t2m’,src=’metnod’)
@@ -297,7 +297,7 @@ diagram(x)
 Figure 7: Examples of ‘cumugram’, ‘wheel’, ‘climvar’, and ‘diagram’ plots. The ‘cumugram’ shows how the mean value of some variable has evolved from the start of the year and compares this curve to previous years. The graphics produced by ‘wheel’, on the other hand, emphasises how the seasonal variations affect the variable, e.g. whether some extremes tend to be associated with a specific season. Panel c shows results produced by ‘climvar’ shows the year-to-year statistics for a variable, e.g. the standard deviation of the temperature on February 1st. The ‘diagram’ method can be used in different context, and for a ‘station’ object, it produces graphics that compare the day-to-day values with those of previous years.
 
 #### Example 2.9.
-```bash
+```R
 # Get 2m temperature data for Ferder and calculate annual mean
 data(ferder)
 x <- annual(ferder)
