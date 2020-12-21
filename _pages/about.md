@@ -1,8 +1,8 @@
 ---
 layout:Default
-permalink: /about/
 title: "About Empirical-Statistical Downscaling"
-navorder 
+nav_order: 1 
+permalink: /about/
 ---
 
 # Introduction
