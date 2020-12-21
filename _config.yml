@@ -112,3 +112,7 @@ defaults:
       sidebar:
         - title: ""
           nav: page_links
+
+aux_links:
+  "esd on GitHub":
+    - "//github.com/metno/esd"
