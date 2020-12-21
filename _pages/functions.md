@@ -28,7 +28,7 @@ The function `retrieve()` has also been adapted to read global climate data from
 As for now, `retrieve()`, does not display a list of missing attributes that are mandatory for further post-processing of the data. The user must add the missing attributes manually. The strength of `retrieve()` is that it can read and return formatted objects with common attributes for post-processing, visualising and making outputs comparable (e.g. re-gridding the field objects into the same grid resolution). Basically, all reanalysis, general circulation models (GCMs), and regional climate models (RCMs) can be read using the ‘esd’ tool and further combined into one object, or analysed, albeit with some limitations due to the size of
 the returned object.
 
-### Function `station`
+### Function `station()`
 The package ‘esd’ includes the function ‘station’ for obtaining historical climate data by querying various web portals, for instance, the MET Norway archive (KDVH) provided by the Norwegian Meteorological Institute14. Data from MET climate web service ‘eKlima’ needs to be adapted manually, the Global Historical Climate Network (GHCN, (Peterson and Vose,1997)) provided by the American National Climatic Data Center15, and the European Climate
 Assessment and Dataset (ECA&D, (Klein Tank et al., 2002)) made available by the Royal Netherlands Meteorological Institute (KNMI) (http://eca.knmi.nl/). Some of the data that is 14http://eklima.met.no; however, this function only works within the firewall included in the package has been pre-formatted within the ‘clim.pact’ package and adapted to meet the new ‘esd’ data format requirements.
 
@@ -42,8 +42,8 @@ ESD package − map.station() − MET Norway 2014 (www.met.no)
 Figure 1: Map of available weather stations recording temperature that are included in the meta-data
 of the ‘esd’ package.
 
-### Quick search - Function ‘select.station’
-The sample data includes also a meta-data object (`stationmeta`) that can be loaded directly and contains meta data such as name of the `loc`*ation and its `id`*entification number, geographical coordinates such as `lon`*gitude, `lat`*itude, and `alt`*itude), `country` name, `param`*eter name of recorded weather variables (e.g. temperature and precipitation), data source (`src`) or provider for almost 100000 stations all over the world (Figures 1 and 2).
+### Quick search - Function `select.station()`
+The sample data includes also a meta-data object (`stationmeta`) that can be loaded directly and contains meta data such as name of the location (`loc`) and its standard ientification number (`stid`), geographical coordinates such as longitude (`lon`), latitude (`lat`), and altitude (`alt`), country name (`country`), parameter name (`param`) of recorded weather variables (e.g. temperature and precipitation), data source (`src`) or provider for thousands of stations all over the world (Figures 1 and 2).
 These meta-data have been imported from existing meta data from the different data source providers. It has to be noted also that most of the available stations are managed by the World Meteorological Organisation (WMO) and made available by the American National Climate Data Centre (NCDC) for scientific research only. The meta data has been merged from the different sources mentioned earlier. Also, other additional data sources can be easily included into the package.
 
 SOURCE(S) :  ECAD/GHCND/METNOD/METNOM/NACD/NORDKLIM
@@ -51,8 +51,7 @@ PRECIP/
 97202
 2014 / 1854
 ESD package − map.station() − MET Norway 2014 (www.met.no)
-Figure 2: Map of available weather stations recording precipitation that are included in the meta-data
-of the ‘esd’ package.
+Figure 2: Map of available weather stations recording precipitation that are included in the meta-data of the ‘esd’ package.
 
 There are two ways of obtaining station data using `station()` method. The first option, which we recommend, is to select a subset of stations from the meta data using the function `select.station()` from a set of criteria. Among these criteria, the minimum length of the recorded data (‘nmin’) can be specified to get, for instance, a subset of stations recording for at least a minimum number of (e.g. 100) years of data (e.g. `select.station(nmin=100)`). Thus, a subsample of the meta data is returned and can be checked for duplications of stations from the various sources. Afterwards, users can start downloading the data for the selected stations. It has to be mentioned that the downloading process for the GHCN and ECA&D is different as the data is stored differently. For the GHCN data sets, each station is stored separately and a direct retrieval can be made. We highly recommend that users perform a prior selection of stations for the GHCN data sets before starting the downloading process. For the ECA&D data sets on the other hand, all stations are downloaded and stored locally as zip files at first call, after which data is extracted for the selection of stations. Other data sets, such as the NACD (Frich et al., 1996), NARP (Førland ), and Nordklim (Tuomenvirta et al., 2001) are stored entirely in ‘esd’ (only holds monthly values of a limited set).
 
