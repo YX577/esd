@@ -8,7 +8,8 @@ permalink: /about/
 
 # Introduction
 
-{: toc}
+{: .no_toc}
+
 
 <details markdown="block">
   <summary>
