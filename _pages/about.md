@@ -1,6 +1,6 @@
 ---
 layout:Default
-title: "About Empirical-Statistical Downscaling"
+title: About Empirical-Statistical Downscaling
 nav_order: 1 
 permalink: /about/
 ---
