@@ -1,12 +1,10 @@
 ---
 layout: default
 title: About Empirical-Statistical Downscaling
-nav_order: 2 
+nav_order: 1 
 has_toc: true
 permalink: /about/
 ---
-
-{:toc}
 
 # Introduction
 
