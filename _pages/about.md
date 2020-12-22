@@ -6,7 +6,6 @@ permalink: /about/
 ---
 
 # Introduction
-
 {: .no_toc}
 
 <details open markdown="block">
@@ -14,7 +13,7 @@ permalink: /about/
     Table of contents
   </summary>
   {: .text-delta }
-1. TOC
+1.1.1 TOC
 {:toc}
 </details>
 
