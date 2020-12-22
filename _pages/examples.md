@@ -1,10 +1,13 @@
 ---
+layout: default
 title: examples
 nav_order: 6
-permalink: \examples\
+permalink: /examples/
 ---
 
 ## Examples
+
+
 
 ### Example 2.1 on how to select weather stations and retrieve recorded values
 ```R
