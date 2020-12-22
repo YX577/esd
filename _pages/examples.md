@@ -152,7 +152,7 @@ map(u10,colorbar=FALSE)
 vec(u10,v10,new=FALSE,a=2,length=0.05)
 ```
 
-## Example 2.8.
+## Example 2.8. test
 ```R
 # Get 2m temperature data for Oslo
 # (works within MET Norway firewall only)
