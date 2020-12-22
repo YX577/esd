@@ -73,7 +73,7 @@ heading_anchors: true
 
 author:
   name   : "No One"
-  avatar : "/assets/images/bio-photo.jpg"
+  #avatar : "/assets/images/bio-photo.jpg"
   bio    : "Nothing here."
   links:
     - label: "Website"
@@ -81,7 +81,7 @@ author:
       url: "https://"
 
 footer:
-  image: /assets/images/LogoMyLFinal-01.png
+  #image: /assets/images/LogoMyLFinal-01.png
   links:
     - label: "MET Norway"
       icon: "fas fa-fw fa-water"
