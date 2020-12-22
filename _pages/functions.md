@@ -8,7 +8,6 @@ permalink: /functions/
 ---
 
 # Functionalities
-
 {: .no_toc }
 
 A short and single line in R produces a complex figure with various information: the generic ‘plot’ yields a plot as seen in the left panel of Figure 4 or can make a graphical presentation of downscaled results that both shows the numbers as well as their quality. How is that possible?
@@ -21,7 +20,7 @@ Figshare for Mac/Linux11 and Windows12)
     Table of contents
   </summary>
   {: .text-delta }
-2. TOC
+1.1.1 TOC
 {:toc}
 </details>
 
