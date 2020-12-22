@@ -20,7 +20,7 @@ Figshare for Mac/Linux11 and Windows12)
     Table of contents
   </summary>
   {: .text-delta }
-1.1.1 TOC
+1. TOC
 {:toc}
 </details>
 
