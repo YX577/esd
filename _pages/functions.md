@@ -16,12 +16,12 @@ The trick is to define different data object types, known as ‘classes’ in R 
 The command library(‘esd’) must be given at any new open R session. The R-package can be installed directly from Github (https://github.com/metno/esd) or
 Figshare for Mac/Linux11 and Windows12)
 
-<details markdown="block">
+<details open markdown="block">
   <summary>
     Table of contents
   </summary>
   {: .text-delta }
-1. TOC
+2. TOC
 {:toc}
 </details>
 
@@ -76,6 +76,7 @@ the ’zoo’ objects. Different types of data objects are processed and handled
 ### Example 2.2 shows some of the classes used in ‘esd’.
 
 The different data objects come bundled with relevant meta-data, stored as data attributes. These are shown using the `str`*ucture function, as displayed in Example 2.3 for a station object.
+
 The various attributes have different functions, e.g. for handling the data, traceability, identification, and visualisation. The idea is that they are based on a standard terminology for which the terms are commonly agreed on and follow standard definitions. A common core set of attributes will make it easier to share data and methods. The attribute `history` contains the call(s) (`call`), time stamp(s), and session info that have been used to create and process the data itself.
 
 ## Function `summary()`
@@ -83,7 +84,70 @@ The S3 method ‘summary’ has been extended to the classes defined in ‘esd�
 provide more tailor-made information. Example 2.4 shows summary statistics for each calendar
 month of a daily station object.
 
-### Example 2.1.
+
+
+Table 1: Data objects in ‘esd’ are determined by a set of classes, listed in this table. This may
+be extended in the future to include radiosonde and radar data objects.
+‘station’
+Class defining station objects. Can be single or multiple stations with daily,
+monthly, seasonal or annual temporal resolution.
+‘spell’
+Looks similar to the station class, but the events are irregularly spaced and
+contains both duration of wet/hot as dry/cold spells. The distinction also
+enables ‘esd’ to apply different plotting and analysis methods than those for
+regular stations.
+‘field’
+Currently represents time series of 2D variables, but may in principle contain
+any number of spatial dimensions.
+‘eof’
+Class defining an EOF describing the spatial patterns (EOFs), the temporal
+variations (PCs), and the eigenvalues.
+‘pca’
+Class defining a PCA is similar to the eof class, but allows for irregular grid
+of stations.
+‘cca’
+Class that defines the results of a CCA, containing a pair of patterns and the
+canonical correlations.
+‘ds’
+Class for DS results.
+‘dsensemble’
+Class for downscaled ensembles.
+‘diagnose’
+Class for diagnostic results.
+‘trajectory’
+Class for trajectories.
+‘xval’
+Class for cross-validation.
+‘xsection’
+Class for cross-sections (Hovmuller diagrams).
+‘mvr’
+Class for multivariate regression (MVR) objects, which hold the matrices that
+maps one data set onto the data space of another.
+
+## Data visualisation
+The main data visualisation is provided through plot and map methods, but there are other more specific methods for producing additional graphs.
+### Function `plot()` 
+The ‘plot’ method in ‘esd’ extends the S3 plot methods from package ‘graphics’ to new ‘esd’ classes (Table 1). ‘plot(x)’ and ‘plot.station(x)’ are equivalent if ‘x’ is an object of class ‘station’.
+Various plotting outputs are generated depending on the class of the objects used as inputs. For instance, the ‘plot.station(x)’ function produces a figure based on the default ‘graphics’ and ‘zoo’ plots but adapted for the station object (Figure 4a). For some classes, plot can produce several or a combination of plots giving more description of the output. The argument ’plot.type’ is also used to distinguish between single or multiple plots in one window. The ‘plot’ function also inherits all graphical parameters from ‘par’ with additional parameters used by ‘esd’. An example of the function ‘plot’ applied to a station object is shown in Example 2.5 and Figure 4a. Although the plot itself gets more complicated for EOFs, the syntax remains as simple as for the station object (Example 2.6, Figure 5).
+
+### Function `map()`
+The function ‘map’ is also an S3 built method and used to produce a map of geographical and geophysical data points and gridded data. ‘map’ can be seen as a spatial plotting method, while plot is mainly used for time series. Unlike ‘plot’, ‘map’ is proper to ‘esd’ and is an S3 method and do not extend the existing ‘map’ function from package ‘maps’ (http://CRAN.R-project.org/package=maps), which too works for the different ‘esd’ objects. When applied to one single station, map plots its location (Example 2.5, Figure 4b).
+
+### Function `vec()`
+The function vec plots vectors of a 2D flow field (Example 2.7, Figure 6).
+
+Figure 6: The output of the example with ‘vec’. In this example, there are different plotting windows for the vectors and the underlying map, but this can be adjusted in the arguments of ‘vec’.
+
+### Info-graphics
+One of the purposes of ‘esd’ is to easily produce visualisation and graphics to bring out new aspects of the information embedded in the data. The development of the info-graphics in this tool has also been inspired by Spiegelhalter et al. (2011), in order to distill the essence of the
+analysis. 
+The information stored in climate data can be extracted in various ways, with emphasis on different aspects, as can be seen in Example 2.8 and Figure 7. A `cumugram()` is shown, displaying the cumulative average value of some variable starting from the first day of the year. The results for the Oslo temperature in this example shows that 2014 has been the warmest year on record since the summer. A ‘rainbow structure’ is consistent with a gradual increase in the temperature.
+The second diagram, ‘wheel’, emphasises the time of the year when the most extreme events have taken place, and ‘climvar’ to the right shows how the year-to-year variance varies with season with a minimum in late summer. The ‘diagram’ method can also be used to view the data by comparing day-by-day values of the present temperature with those of the previous years. The figure shows that there have been some exceptionally mild autumn temperatures in 2014. Other functions for making info-graphics include `vis.*`, which make alternative graphics output displaying different information. Trends can be estimated by linear regression using the simple ‘trend’ function. An alternative trend analysis can be done using the function ‘vis.trends’ which estimates linear regressions for sliding periods of various lengths (Example 2.9, Figure 8). The results are presented visually with the strength of the trends shown as a colour scale on a grid where the x- and y-axes represent the starting point and the length of each period, respectively. Periods with statistically significant trends are marked with black outlines. The advantage of `vis.trends` is that it shows trends of various time scales, considering all variations of start- and end-points. The longest period is found in the upper left corner, representing the full length of the time series. The most recent period is shown in the bottom right corner. As demonstrated in Example 2.9,
+the strength and significance of estimated trends are sensitive to the period considered. The multiple period trend analysis is therefore a more robust alternative to single period trend fitting.
+
+### Examples
+
+#### Example 2.1 on how to select weather stations and retrieve recorded values
 ```R
 # Select a station across India recording daily maximum temperature
 # from the global historical climate network-daily
@@ -112,7 +176,7 @@ Figure 3: Map showing available stations across India from the GHCN-D dataset an
 the annual maximum temperature recorded at New Delhi weather station (blue point) including
 linear trend line.
 
-### Example 2.2.
+#### Example 2.2 on the different esd objects and clasees
 ```R
 # Example of monthly station data:
 > data(Oslo)
@@ -175,7 +239,7 @@ Index:
 Date[1:41611], format: "1900-01-01" "1900-01-02" "1900-01-03" "1900-01-04" ...
 ```
 
-### Example 2.4.
+#### Example 2.4 on how to load some data sets and display the summary of statistics
 ```R
 ## Load data for Ferder
 > data(ferder)
@@ -183,58 +247,7 @@ Date[1:41611], format: "1900-01-01" "1900-01-02" "1900-01-03" "1900-01-04" ...
 > summary(ferder)
 ```
 
-
-Table 1: Data objects in ‘esd’ are determined by a set of classes, listed in this table. This may
-be extended in the future to include radiosonde and radar data objects.
-‘station’
-Class defining station objects. Can be single or multiple stations with daily,
-monthly, seasonal or annual temporal resolution.
-‘spell’
-Looks similar to the station class, but the events are irregularly spaced and
-contains both duration of wet/hot as dry/cold spells. The distinction also
-enables ‘esd’ to apply different plotting and analysis methods than those for
-regular stations.
-‘field’
-Currently represents time series of 2D variables, but may in principle contain
-any number of spatial dimensions.
-‘eof’
-Class defining an EOF describing the spatial patterns (EOFs), the temporal
-variations (PCs), and the eigenvalues.
-‘pca’
-Class defining a PCA is similar to the eof class, but allows for irregular grid
-of stations.
-‘cca’
-Class that defines the results of a CCA, containing a pair of patterns and the
-canonical correlations.
-‘ds’
-Class for DS results.
-‘dsensemble’
-Class for downscaled ensembles.
-‘diagnose’
-Class for diagnostic results.
-‘trajectory’
-Class for trajectories.
-‘xval’
-Class for cross-validation.
-‘xsection’
-Class for cross-sections (Hovmuller diagrams).
-‘mvr’
-Class for multivariate regression (MVR) objects, which hold the matrices that
-maps one data set onto the data space of another.
-
-## Data visualisation
-The main data visualisation is provided through plot and map methods, but there are other more specific methods for producing additional graphs.
-### Function `plot()` 
-The ‘plot’ method in ‘esd’ extends the S3 plot methods from package ‘graphics’ to new ‘esd’ classes (Table 1). ‘plot(x)’ and ‘plot.station(x)’ are equivalent if ‘x’ is an object of class ‘station’.
-Various plotting outputs are generated depending on the class of the objects used as inputs. For instance, the ‘plot.station(x)’ function produces a figure based on the default ‘graphics’ and ‘zoo’ plots but adapted for the station object (Figure 4a). For some classes, plot can produce several or a combination of plots giving more description of the output. The argument ’plot.type’ is also used to distinguish between single or multiple plots in one window. The ‘plot’ function also inherits all graphical parameters from ‘par’ with additional parameters used by ‘esd’. An example of the function ‘plot’ applied to a station object is shown in Example 2.5 and Figure 4a. Although the plot itself gets more complicated for EOFs, the syntax remains as simple as for the station object (Example 2.6, Figure 5).
-
-### Function `map()`
-The function ‘map’ is also an S3 built method and used to produce a map of geographical and geophysical data points and gridded data. ‘map’ can be seen as a spatial plotting method, while plot is mainly used for time series. Unlike ‘plot’, ‘map’ is proper to ‘esd’ and is an S3 method and do not extend the existing ‘map’ function from package ‘maps’ (http://CRAN.R-project.org/package=maps), which too works for the different ‘esd’ objects. When applied to one single station, map plots its location (Example 2.5, Figure 4b).
-
-### Function `vec()`
-The function vec plots vectors of a 2D flow field (Example 2.7, Figure 6).
-
-### Example 2.5.
+#### Example 2.5 on how to load a weather station object and display the location on a map
 ```R
 # Load bjornholt data set
 data(bjornholt)
@@ -246,7 +259,7 @@ map(bjornholt)
 
 Figure 4: Example of a station (a) and a map plot (b) for a single station ‘Bjornholt’.
 
-### Example 2.6.
+#### Example 2.6 on how to read a field object and plot the results
 ```R
 #Get NCEP 2m air temperature for the selected spatial window defined by lon and lat
 t2m <- t2m.NCEP(lon=c(-30,30),lat=c(40,70))
@@ -258,7 +271,7 @@ plot(X)
 
 Figure 5: An example of a plot results for an EOF object.
 
-### Example 2.7.
+#### Example 2.7 on how to retrieve wind data sets and visualise the results
 ```R
 # Load 10m zonal and meridional wind components
 u10 <- retrieve(’data/ERAINT/eraint_elnino.nc’,param=’u10’)
@@ -268,15 +281,6 @@ map(u10,colorbar=FALSE)
 # Display the vectors
 vec(u10,v10,new=FALSE,a=2,length=0.05)
 ```
-
-Figure 6: The output of the example with ‘vec’. In this example, there are different plotting windows for the vectors and the underlying map, but this can be adjusted in the arguments of ‘vec’.
-
-### Info-graphics
-One of the purposes of ‘esd’ is to easily produce visualisation and graphics to bring out new aspects of the information embedded in the data. The development of the info-graphics in this tool has also been inspired by Spiegelhalter et al. (2011), in order to distill the essence of the
-analysis. 
-The information stored in climate data can be extracted in various ways, with emphasis on different aspects, as can be seen in Example 2.8 and Figure 7. A `cumugram()` is shown, displaying the cumulative average value of some variable starting from the first day of the year. The results for the Oslo temperature in this example shows that 2014 has been the warmest year on record since the summer. A ‘rainbow structure’ is consistent with a gradual increase in the temperature.
-The second diagram, ‘wheel’, emphasises the time of the year when the most extreme events have taken place, and ‘climvar’ to the right shows how the year-to-year variance varies with season with a minimum in late summer. The ‘diagram’ method can also be used to view the data by comparing day-by-day values of the present temperature with those of the previous years. The figure shows that there have been some exceptionally mild autumn temperatures in 2014. Other functions for making info-graphics include `vis.*`, which make alternative graphics output displaying different information. Trends can be estimated by linear regression using the simple ‘trend’ function. An alternative trend analysis can be done using the function ‘vis.trends’ which estimates linear regressions for sliding periods of various lengths (Example 2.9, Figure 8). The results are presented visually with the strength of the trends shown as a colour scale on a grid where the x- and y-axes represent the starting point and the length of each period, respectively. Periods with statistically significant trends are marked with black outlines. The advantage of `vis.trends` is that it shows trends of various time scales, considering all variations of start- and end-points. The longest period is found in the upper left corner, representing the full length of the time series. The most recent period is shown in the bottom right corner. As demonstrated in Example 2.9,
-the strength and significance of estimated trends are sensitive to the period considered. The multiple period trend analysis is therefore a more robust alternative to single period trend fitting.
 
 #### Example 2.8.
 ```R
@@ -299,7 +303,7 @@ diagram(x)
 
 Figure 7: Examples of ‘cumugram’, ‘wheel’, ‘climvar’, and ‘diagram’ plots. The ‘cumugram’ shows how the mean value of some variable has evolved from the start of the year and compares this curve to previous years. The graphics produced by ‘wheel’, on the other hand, emphasises how the seasonal variations affect the variable, e.g. whether some extremes tend to be associated with a specific season. Panel c shows results produced by ‘climvar’ shows the year-to-year statistics for a variable, e.g. the standard deviation of the temperature on February 1st. The ‘diagram’ method can be used in different context, and for a ‘station’ object, it produces graphics that compare the day-to-day values with those of previous years.
 
-#### Example 2.9.
+#### Example 2.9 on how to process the data and visualise the trend of the time series
 ```R
 # Get 2m temperature data for Ferder and calculate annual mean
 data(ferder)
