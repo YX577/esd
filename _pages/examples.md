@@ -1,7 +1,7 @@
 ---
 layout: default
 title: examples
-nav_order: 6
+nav_order: 4
 permalink: /examples/
 ---
 
