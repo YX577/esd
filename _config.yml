@@ -24,7 +24,7 @@ repository: "metno/..."
 #title_separator: "-"
 #minimal_mistakes_skin: default
 search: true
-logo: "assets/images/LogoMyLFinal-01.png"
+#logo: "assets/images/LogoMyLFinal-01.png"
 
 # Build settings
 markdown: kramdown
