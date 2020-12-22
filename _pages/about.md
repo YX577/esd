@@ -13,7 +13,7 @@ permalink: /about/
     Table of contents
   </summary>
   {: .text-delta }
-1.1.1 TOC
+1. TOC
 {:toc}
 </details>
 
