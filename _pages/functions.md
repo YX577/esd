@@ -144,9 +144,9 @@ The information stored in climate data can be extracted in various ways, with em
 The second diagram, ‘wheel’, emphasises the time of the year when the most extreme events have taken place, and ‘climvar’ to the right shows how the year-to-year variance varies with season with a minimum in late summer. The ‘diagram’ method can also be used to view the data by comparing day-by-day values of the present temperature with those of the previous years. The figure shows that there have been some exceptionally mild autumn temperatures in 2014. Other functions for making info-graphics include `vis.*`, which make alternative graphics output displaying different information. Trends can be estimated by linear regression using the simple ‘trend’ function. An alternative trend analysis can be done using the function ‘vis.trends’ which estimates linear regressions for sliding periods of various lengths (Example 2.9, Figure 8). The results are presented visually with the strength of the trends shown as a colour scale on a grid where the x- and y-axes represent the starting point and the length of each period, respectively. Periods with statistically significant trends are marked with black outlines. The advantage of `vis.trends` is that it shows trends of various time scales, considering all variations of start- and end-points. The longest period is found in the upper left corner, representing the full length of the time series. The most recent period is shown in the bottom right corner. As demonstrated in Example 2.9,
 the strength and significance of estimated trends are sensitive to the period considered. The multiple period trend analysis is therefore a more robust alternative to single period trend fitting.
 
-### Examples
+## Examples
 
-#### Example 2.1 on how to select weather stations and retrieve recorded values
+### Example 2.1 on how to select weather stations and retrieve recorded values
 ```R
 # Select a station across India recording daily maximum temperature
 # from the global historical climate network-daily
@@ -175,7 +175,7 @@ Figure 3: Map showing available stations across India from the GHCN-D dataset an
 the annual maximum temperature recorded at New Delhi weather station (blue point) including
 linear trend line.
 
-#### Example 2.2 on the different esd objects and clasees
+### Example 2.2 on the different esd objects and clasees
 ```R
 # Example of monthly station data:
 > data(Oslo)
@@ -238,15 +238,14 @@ Index:
 Date[1:41611], format: "1900-01-01" "1900-01-02" "1900-01-03" "1900-01-04" ...
 ```
 
-#### Example 2.4 on how to load some data sets and display the summary of statistics
+### Example 2.4 on how to load some data sets and display the summary of statistics
 ```R
 ## Load data for Ferder
 > data(ferder)
 ## Display the summary of statistics
 > summary(ferder)
 ```
-
-#### Example 2.5 on how to load a weather station object and display the location on a map
+### Example 2.5 on how to load a weather station object and display the location on a map
 ```R
 # Load bjornholt data set
 data(bjornholt)
@@ -258,7 +257,7 @@ map(bjornholt)
 
 Figure 4: Example of a station (a) and a map plot (b) for a single station ‘Bjornholt’.
 
-#### Example 2.6 on how to read a field object and plot the results
+### Example 2.6 on how to read a field object and plot the results
 ```R
 #Get NCEP 2m air temperature for the selected spatial window defined by lon and lat
 t2m <- t2m.NCEP(lon=c(-30,30),lat=c(40,70))
@@ -270,7 +269,7 @@ plot(X)
 
 Figure 5: An example of a plot results for an EOF object.
 
-#### Example 2.7 on how to retrieve wind data sets and visualise the results
+### Example 2.7 on how to retrieve wind data sets and visualise the results
 ```R
 # Load 10m zonal and meridional wind components
 u10 <- retrieve(’data/ERAINT/eraint_elnino.nc’,param=’u10’)
@@ -281,7 +280,7 @@ map(u10,colorbar=FALSE)
 vec(u10,v10,new=FALSE,a=2,length=0.05)
 ```
 
-#### Example 2.8.
+### Example 2.8.
 ```R
 # Get 2m temperature data for Oslo
 # (works within MET Norway firewall only)
@@ -302,7 +301,7 @@ diagram(x)
 
 Figure 7: Examples of ‘cumugram’, ‘wheel’, ‘climvar’, and ‘diagram’ plots. The ‘cumugram’ shows how the mean value of some variable has evolved from the start of the year and compares this curve to previous years. The graphics produced by ‘wheel’, on the other hand, emphasises how the seasonal variations affect the variable, e.g. whether some extremes tend to be associated with a specific season. Panel c shows results produced by ‘climvar’ shows the year-to-year statistics for a variable, e.g. the standard deviation of the temperature on February 1st. The ‘diagram’ method can be used in different context, and for a ‘station’ object, it produces graphics that compare the day-to-day values with those of previous years.
 
-#### Example 2.9 on how to process the data and visualise the trend of the time series
+### Example 2.9 on how to process the data and visualise the trend of the time series
 ```R
 # Get 2m temperature data for Ferder and calculate annual mean
 data(ferder)
