@@ -26,7 +26,7 @@ repository: "metno/..."
 search: true
 #logo: "assets/images/LogoMyLFinal-01.png"
 
-color_scheme: fou
+#color_scheme: fou
 
 # Build settings
 markdown: kramdown
