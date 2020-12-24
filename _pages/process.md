@@ -21,22 +21,33 @@ quency. These functions include ‘wetmean’, ‘wetfreq’, ‘count’, ‘nv
 
 Table 2: A list of specialised functions in ‘esd’ designed to make climate analysis simple and user-friendly.
 
-| :------------- | :----------: |
 | `wetmean()`   | Estimate the wet-day mean µ. Default threshold is 1mm/day. |
-| `wetfreq()`   | Estimate the wet-day frequency fw. Default threshold is 1mm/day. |
-| `exceedance`  | Select the data with values exceeding a critical threshold value.
-| `count`       | Count data points in sample.
-| ‘C.C.eq’      | Clausius-Clapeyron equation.
-| ‘NE’          | Predict number of events, given a frequency and a sample size.
-|‘spell’        | Estimate the spell lengths (consecutive days/straights) of events.
-|‘precip.vul’   | Simple vulnerability index associated with precipitation: Vp = µ/fw.
-|‘t2m.vul’      | Simple vulnerability index associated with temperature based on consecutive number of hot days above a critical threshold (default 30 degrees C): VT = nchd.
-|‘precip.rv’    | Simple and rough estimate of return value for weak-to-moderate ‘extremes’: xτ = − ln(1/(fwτ ))µ.
-|‘nv’           | Number of valid data points in sample.
-|‘precip.Pr’    |Simple and crude estimate of the probability of precipitation exceeding a threshold (default: 10mm/day): P r(X > x) = fw exp(−x/µ) assumes exponential distribution.
-|`t2m.Pr()`     |Simple and crude estimate of the probability of temperature exceeding a threshold (default: 30 degree C): P r(X > x) = N (µ, σ) assumes normal distribution.
 
-Example 3.1. # Load data for Bjornholt
+| `wetfreq()`   | Estimate the wet-day frequency fw. Default threshold is 1mm/day. |
+
+| `exceedance`  | Select the data with values exceeding a critical threshold value. |
+
+| `count`       | Count data points in sample. |
+
+| ‘C.C.eq’      | Clausius-Clapeyron equation. |
+
+| ‘NE’          | Predict number of events, given a frequency and a sample size. |
+
+|‘spell’        | Estimate the spell lengths (consecutive days/straights) of events. |
+
+|‘precip.vul’   | Simple vulnerability index associated with precipitation: Vp = µ/fw. |
+
+|‘t2m.vul’      | Simple vulnerability index associated with temperature based on consecutive number of hot days above a critical threshold (default 30 degrees C): VT = nchd. |
+
+|‘precip.rv’    | Simple and rough estimate of return value for weak-to-moderate ‘extremes’: xτ = − ln(1/(fwτ ))µ. |
+
+|‘nv’           | Number of valid data points in sample. |
+
+|‘precip.Pr’    |Simple and crude estimate of the probability of precipitation exceeding a threshold (default: 10mm/day): P r(X > x) = fw exp(−x/µ) assumes exponential distribution.|
+
+|`t2m.Pr()`     |Simple and crude estimate of the probability of temperature exceeding a threshold (default: 30 degree C): P r(X > x) = N (µ, σ) assumes normal distribution.|
+
+Example 3.1. # Load data for Bjornholt 
 ```R
 data(bjornholt)
 y <- bjornholt
