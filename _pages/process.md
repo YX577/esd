@@ -1,12 +1,13 @@
 ---
 layout: default
+title : Data processing
 nav_order: 3
 has_children: true
 has_toc: false
 permalink: /process/
 ---
 
-# Data handling & processing
+# Data processing
 {: .no_toc }
 
 <details open markdown="block">
