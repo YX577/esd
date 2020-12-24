@@ -275,8 +275,8 @@ A range of transformations between different type of objects can be done with th
 
 Table 3: The ‘esd’ extension of the `as.` method. Some of these are the same as some other functions, e.g. `annual` and `as.annual` 
 
-as.field | as.field.default | as.field.zoo |  as.field.station | as.field | 
-as.field.comb | as.field.eof
+as.field | as.field.default | as.field.zoo |  as.field.station | 
+as.field | as.field.comb | as.field.eof
 
 as.4seasons | as.4seasons.day | as.4seasons.default | as.4seasons.station |
 as.4seasons.field | as.4seasons.spell | 
@@ -290,16 +290,18 @@ as.monthly |
 as.annual | as.annual.default | as.annual.integer | as.annual.numeric | 
 as.annual.spell | as.annual.yearqtr
 
-as.original | as.original.data | as.original.data.ds | as.original.data.station | as.original.station
+as.original | as.original.data | as.original.data.ds | as.original.data.station | 
+as.original.station
 
-as.pattern | as.pattern.cca | as.pattern.corfield | as.pattern.ds | as.pattern.eof | 
-as.pattern.field | as.pattern.mvr
+as.pattern | as.pattern.cca | as.pattern.corfield | as.pattern.ds | 
+as.pattern.eof | as.pattern.field | as.pattern.mvr
 
 as.anomaly | as.anomaly.default | as.anomaly.field | as.anomaly.station
 
 as.appended | as.appended.ds.comb | as.appended.eof.comb | as.appended.field.comb | 
 
-as.eof | as.eof.appendix | as.eof.comb | as.eof.eof | as.eof.field | as.eof.zoo | as.eof.list
+as.eof | as.eof.appendix | as.eof.comb | as.eof.eof | 
+as.eof.field | as.eof.zoo | as.eof.list
 
 as.pca | as.pca.ds | as.pca.station | 
 
@@ -315,8 +317,8 @@ as.stand | as.stand.station |
 
 as.ds |
 
-as.station | as.station.list | as.station.eof | as.station.field | as.station.ds | 
-as.station.spell | 
+as.station | as.station.list | as.station.eof | as.station.field | 
+as.station.ds | as.station.spell | 
 
 as.station.pca | as.station.zoo
 
