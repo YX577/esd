@@ -1,4 +1,25 @@
-# Analysis & Diagnostics
+
+---
+layout: default
+title : Data Analyses
+nav_order: 5
+has_children: true
+has_toc: false
+permalink: /analyses/
+---
+
+# Analyses & Diagnostics
+{: .no_toc }
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
+
 
 ## Empirical Orthogonal Functions
 Empirical orthogonal functions (EOFs; Lorenz (1956)) provide a handy framework for multivariate data analysis. Here EOFs refer to a class of data objects, however, in a more general
