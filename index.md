@@ -2,7 +2,7 @@
 nav_order: 1
 ---
 
-## Welcome
+## esd R tool
 
 We present a tool, the R-package‘esd’, made freely available by the Norwegian MeteorologicalInstitute (MET Norway) for use by the climate community that: 
  - was primarily built for empirical-statistical downscaling of climate information and has been extended to search, process, dissect,and analyse meteorological and climatological data (localas well as global climate data sets).  
@@ -15,5 +15,5 @@ The philosophy behind its design has been to reduce the time spent on coding, re
 
 ## Support or Contact
 
-Having trouble with ESD R package? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Having trouble with ESD R tool? Check out our [documentation](https://github.com/metno/esd/wiki) or [contact support](https://github.com/contact) and we’ll help you sort it out.
  
