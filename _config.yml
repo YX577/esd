@@ -23,7 +23,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 repository: "metno/..."
 #title_separator: "-"
 #minimal_mistakes_skin: default
-search: true
+search_enabled: true
 #logo: "assets/images/LogoMyLFinal-01.png"
 
 color_scheme: foo
