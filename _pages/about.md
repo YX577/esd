@@ -5,7 +5,7 @@ nav_order: 2
 permalink: /about/
 ---
 
-# Introduction
+# Background
 {: .no_toc}
 
 <details open markdown="block">
