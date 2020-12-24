@@ -1,13 +1,12 @@
 ---
 layout: default
-title: Functionalities
 nav_order: 3
 has_children: true
 has_toc: false
 permalink: /functions/
 ---
 
-# Functionalities
+# Utilities
 {: .no_toc }
 
 A short and single line in R produces a complex figure with various information: the generic ‘plot’ yields a plot as seen in the left panel of Figure 4 or can make a graphical presentation of downscaled results that both shows the numbers as well as their quality. How is that possible?
