@@ -24,6 +24,7 @@ repository: "metno/..."
 #title_separator: "-"
 #minimal_mistakes_skin: default
 search_enabled: true
+search: true
 #logo: "assets/images/LogoMyLFinal-01.png"
 
 color_scheme: foo
