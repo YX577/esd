@@ -92,3 +92,5 @@ footer:
 aux_links:
   "esd on GitHub":
     - "//github.com/metno/esd"
+
+theme: jekyll-theme-minimal
