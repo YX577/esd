@@ -1,10 +1,9 @@
 source "https://rubygems.org"
-gemspec
+#gemspec
 
-
-#gem "github-pages", group: :jekyll_plugins
-## gem "minimal-mistakes-jekyll"
-gem "just-the-docs"
+gem "github-pages", group: :jekyll_plugins
+# gem "minimal-mistakes-jekyll"
+gem "pmarsceill/just-the-docs"
 
 #gem "tzinfo-data"
 #gem "wdm", "~> 0.1.0" if Gem.win_platform?
