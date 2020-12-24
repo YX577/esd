@@ -1,7 +1,7 @@
 ---
 layout: default 
 title: Retrieve
-parent: Functionalities
+parent: Utilities
 nav_order: 2
 permanent: \retrieve\ 
 ---
