@@ -21,6 +21,7 @@ quency. These functions include ‘wetmean’, ‘wetfreq’, ‘count’, ‘nv
 
 Table 2: A list of specialised functions in ‘esd’ designed to make climate analysis simple and user-friendly.
 
+| :------------- | :----------: |
 | `wetmean()`   | Estimate the wet-day mean µ. Default threshold is 1mm/day. |
 | `wetfreq()`   | Estimate the wet-day frequency fw. Default threshold is 1mm/day. |
 | `exceedance`  | Select the data with values exceeding a critical threshold value.
