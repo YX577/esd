@@ -1,0 +1,540 @@
+<h1 class="no_toc" id="data-processing">Data processing</h1>
+
+<details open="">
+  <summary class="text-delta">
+    Table of contents
+  </summary>
+<ol id="markdown-toc">
+  <li><a href="#formulas--functions" id="markdown-toc-formulas--functions">Formulas &amp; functions</a>    <ol>
+      <li><a href="#small-handy-functions" id="markdown-toc-small-handy-functions">Small handy functions</a></li>
+      <li><a href="#wet-means-frequencies-counts-and-spells" id="markdown-toc-wet-means-frequencies-counts-and-spells">Wet-means, frequencies, counts and spells</a></li>
+    </ol>
+  </li>
+  <li><a href="#re-gridding" id="markdown-toc-re-gridding">re-gridding</a>    <ol>
+      <li><a href="#how-the-re-gridding-works" id="markdown-toc-how-the-re-gridding-works">How the re-gridding works</a></li>
+    </ol>
+  </li>
+  <li><a href="#nearest-data-point" id="markdown-toc-nearest-data-point">Nearest data point</a></li>
+  <li><a href="#subsetting" id="markdown-toc-subsetting">Subsetting</a></li>
+  <li><a href="#35-combining-and-synchronising" id="markdown-toc-35-combining-and-synchronising">3.5 Combining and synchronising</a></li>
+  <li><a href="#36-anomalies" id="markdown-toc-36-anomalies">3.6 Anomalies</a></li>
+  <li><a href="#37-aggregate-monthly-seasonal-and-annual-statistics" id="markdown-toc-37-aggregate-monthly-seasonal-and-annual-statistics">3.7 Aggregate: monthly, seasonal and annual statistics</a></li>
+  <li><a href="#38-spatial-averaging-of-field-objects---aggregatearea" id="markdown-toc-38-spatial-averaging-of-field-objects---aggregatearea">3.8 Spatial averaging of field objects - aggregate.area</a></li>
+  <li><a href="#39-transformations-and-conversions-as" id="markdown-toc-39-transformations-and-conversions-as">3.9 Transformations and conversions: as.</a></li>
+</ol>
+
+</details>
+
+<p>The ‘esd’-package contains a set of different methods for handling and processing data and model results. All the processes, however, are designed to leave a <code class="language-plaintext highlighter-rouge">stamp</code> that shows how the objects have been created and is saved in the <code class="language-plaintext highlighter-rouge">history</code> attribute of an object. The history can be extracted using the function <code class="language-plaintext highlighter-rouge">history()</code>. This is very useful as it makes the analysis more transparent, traceable, and reproducible. One important objective of ‘esd’ is also to make data handling simple and intuitive, as well as efficient.
+All ‘esd’ functionalities will use the same type of arguments and logic. For instance, the argument <code class="language-plaintext highlighter-rouge">it</code> is used to pass a time index to the call, whereas <code class="language-plaintext highlighter-rouge">is</code> is used as a space index - these are for instance used to extract sub-samples from the data, e.g. when one wants to work on a subset (in time and/or space) of the original data (e.g. a smaller region, a shorter interval, or a specific season/month; see below).</p>
+
+<h2 id="formulas--functions">Formulas &amp; functions</h2>
+<h3 id="small-handy-functions">Small handy functions</h3>
+<p>The two functions <code class="language-plaintext highlighter-rouge">g2dl()</code> (Greenwich to dateline) and <code class="language-plaintext highlighter-rouge">sp2np</code> (south-pole to north-pole) were included in ‘esd’ to organise and sort data in a consistent way. Many gridded data come with different choices: some are ordered from north to south, others from south to north; some start from Greenwich (0 degrees east) whereas others start from the date line (180 degrees west).
+Other functions to simplify data processing include <code class="language-plaintext highlighter-rouge">lon</code> (longitude), <code class="language-plaintext highlighter-rouge">lat</code> (latitude), <code class="language-plaintext highlighter-rouge">alt</code> (altitude), <code class="language-plaintext highlighter-rouge">cntr</code> (country),<code class="language-plaintext highlighter-rouge">loc</code> (location name), <code class="language-plaintext highlighter-rouge">varid</code> (variable name), and <code class="language-plaintext highlighter-rouge">stid</code> (station number). Some of these only apply to <code class="language-plaintext highlighter-rouge">station</code> objects.</p>
+
+<h3 id="wet-means-frequencies-counts-and-spells">Wet-means, frequencies, counts and spells</h3>
+<p>A number of functions have been introduced to make analysis of precipitation simpler, such as the estimation of wet-day mean (a threshold is set to 1mm/day as default) or wet-day frequency. These functions include <code class="language-plaintext highlighter-rouge">wetmean</code>, <code class="language-plaintext highlighter-rouge">wetfreq</code>, <code class="language-plaintext highlighter-rouge">count</code>, <code class="language-plaintext highlighter-rouge">nv</code>, and <code class="language-plaintext highlighter-rouge">spell</code>, and can be used in association with ‘aggregate’. Some of these functions are wrappers for the function <code class="language-plaintext highlighter-rouge">exceedance</code> which discards all data with a value lower than a given threshold value. Table 2 gives an overview and some examples are provided in Example 3.1 and 3.2.</p>
+
+<p>Table 2: A list of specialised functions in ‘esd’ designed to make climate analysis simple and user-friendly.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">wetmean()</code></td>
+      <td>Estimate the wet-day mean µ. Default threshold is 1mm/day.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">wetfreq()</code></td>
+      <td>Estimate the wet-day frequency fw. Default threshold is 1mm/day.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">exceedance</code></td>
+      <td>Select the data with values exceeding a critical threshold value.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">count</code></td>
+      <td>Count data points in sample.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">C.C.eq</code></td>
+      <td>Clausius-Clapeyron equation.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NE</code></td>
+      <td>Predict number of events, given a frequency and a sample size.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">spell</code></td>
+      <td>Estimate the spell lengths (consecutive days/straights) of events.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">precip.vul</code></td>
+      <td>Simple vulnerability index associated with precipitation: Vp = µ/fw.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">t2m.vul</code></td>
+      <td>Simple vulnerability index associated with temperature based on consecutive number of hot days above a critical threshold (default 30 degrees C): VT = nchd.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">precip.rv</code></td>
+      <td>Simple and rough estimate of return value for weak-to-moderate ‘extremes’: xτ = − ln(1/(fwτ ))µ.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">nv</code></td>
+      <td>Number of valid data points in sample.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">precip.Pr</code></td>
+      <td>Simple and crude estimate of the probability of precipitation exceeding a threshold (default: 10mm/day): P r(X &gt; x) = fw exp(−x/µ) assumes exponential distribution.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">t2m.Pr()</code></td>
+      <td>Simple and crude estimate of the probability of temperature exceeding a threshold (default: 30 degree C): P r(X &gt; x) = N (µ, σ) assumes normal distribution.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Example 3.1. # Load data for Bjornholt</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="p">(</span><span class="n">bjornholt</span><span class="p">)</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">bjornholt</span><span class="w">
+</span><span class="c1"># Annual wet-mean:</span><span class="w">
+</span><span class="n">mu</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">annual</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">wetmean</span><span class="err">’</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Plot the result for the period 1883 to 2014</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span><span class="m">14</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Annual wet-freq:</span><span class="w">
+</span><span class="n">fw</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">annual</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">wetfreq</span><span class="err">’</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Plot the result for the period 1883 to 2014</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">subset</span><span class="p">(</span><span class="n">fw</span><span class="p">,</span><span class="n">it</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1883</span><span class="p">,</span><span class="m">2014</span><span class="p">)),</span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0.2</span><span class="p">,</span><span class="m">0.5</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Annual number of events with y &gt; 10mm/day:</span><span class="w">
+</span><span class="n">nw</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">annual</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">count</span><span class="err">’</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="m">10</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Plot the result for the period 1883 to 2014</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">subset</span><span class="p">(</span><span class="n">nw</span><span class="p">,</span><span class="n">it</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1883</span><span class="p">,</span><span class="m">2014</span><span class="p">)),</span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="m">60</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Compute wet/dry spells</span><span class="w">
+</span><span class="n">sp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spell</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Plot the result</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Figure 9: Plots of precipitation statistics at Bjornholt such as a) wet-day mean (µ), b) wet-day frequency (fw), c) number of events with precipitation higher than 10mm, and d) wet/dry spells.</p>
+
+<p>Example 3.2.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load ECAD dataset over Norway recording a 100 years of daily data</span><span class="w">
+</span><span class="n">ecad</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">station</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="s2">"precip"</span><span class="p">,</span><span class="n">src</span><span class="o">=</span><span class="s2">"ecad"</span><span class="p">,</span><span class="n">cntr</span><span class="o">=</span><span class="s2">"Norway"</span><span class="p">,</span><span class="n">nmin</span><span class="o">=</span><span class="m">100</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Map the vulnerability index:</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">ecad</span><span class="p">,</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">precip.vul</span><span class="err">’</span><span class="p">,</span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-10</span><span class="p">,</span><span class="m">40</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="n">colbar</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">heat.colors</span><span class="p">(</span><span class="m">20</span><span class="p">)))</span><span class="w">
+</span><span class="c1"># Map approximate 10-year return values:</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">ecad</span><span class="p">,</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">precip.rv</span><span class="err">’</span><span class="p">,</span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-10</span><span class="p">,</span><span class="m">40</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="n">colbar</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">heat.colors</span><span class="p">(</span><span class="m">20</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+<p>Figure 10: An example of a plot of the vulnerability index µ/fw (left) and an approximation of daily 10-year return values (right) for a selection of station from the ECA&amp;D recording at least a 100 years of data.</p>
+
+<h2 id="re-gridding">re-gridding</h2>
+<p>Gridded data often come on different spatial grids and/or resolutions, such as re-analyses, global climate models (GCMs) and regional climate models (RCMs). In order to compare these
+or apply a common set of analyses to the different model results or reanalysis, it is necessary to present the data on a common grid resolution first. This is achieved via the function called <code class="language-plaintext highlighter-rouge">regrid</code> which performs a bilinear interpolation from the original grid resolution to a new one. ‘regrid’ is also an S3-built in function and can be applied on all ‘esd’ objects. Another strength of <code class="language-plaintext highlighter-rouge">regrid</code> is that it allows also interpolating from gridded data or GCM/RCM model results into a specific location or station. Regrid can take several minutes and is time consuming depending on the selected region and grid resolution.
+Again, the common syntax for the argument <code class="language-plaintext highlighter-rouge">is</code> is shown, where <code class="language-plaintext highlighter-rouge">is</code> refers to spatial indexing whereas <code class="language-plaintext highlighter-rouge">it</code> is for temporal indexing. The methods have been designed with some flexibility in mind, so that when <code class="language-plaintext highlighter-rouge">is</code> is assigned another field type, it will interpolate the data onto that specific grid. Similarly, if <code class="language-plaintext highlighter-rouge">is</code> is given a station object, then it will interpolate the data to the same coordinate as the station (the output will then be a station object). The general syntax of <code class="language-plaintext highlighter-rouge">regrid</code> is as follows <code class="language-plaintext highlighter-rouge">regrid(x,is,...)</code>. There is a difference between <code class="language-plaintext highlighter-rouge">is</code> and <code class="language-plaintext highlighter-rouge">it</code> because the spatial indexing can include both longitude and latitude dimensions, as well as a number of stations. Hence, the <code class="language-plaintext highlighter-rouge">is</code> is often given a <code class="language-plaintext highlighter-rouge">list</code> object (Example 3.3).</p>
+
+<p>Example 3.4 shows the re-gridding between the NCEP reanalysis and NorESM.M global climate model result for an area covering Europe (30W–30E/40N–70N). In this particular case, both the gridded products (NCEP and NorESM.M) have the same spatial resolution of 2.5 degrees, but <code class="language-plaintext highlighter-rouge">regrid</code> works also with different grid resolutions.</p>
+
+<h3 id="how-the-re-gridding-works">How the re-gridding works</h3>
+<p>The re-gridding is based on a bi-linear interpolation according to the linear algebra expression 
+X′ = W X (1)
+W is a sparse matrix of weights since each new grid cell is a weighted sum of the four surrounding grid cells. The sparse character saves computer resources compared to the full weight matrix which would have the dimensions of the product of X′ and X. Thus, the re-gridding becomes more efficient by (a) utilising the information about the sparseness (i.e. only needs the weights and the index of the surrounding grid cells to the point of interest) and (b) computing the weights only once, then use using the <code class="language-plaintext highlighter-rouge">apply()</code> function rather than for loops to weight all time steps.</p>
+
+<h2 id="nearest-data-point">Nearest data point</h2>
+<p>An alternative to re-gridding is to select the nearest data point, as a bi-linear interpolation will have an influence on extremes through the estimation of values in terms of weighted sums of nearby points. The ‘esd’ package provides the function <code class="language-plaintext highlighter-rouge">nearest</code> that selects a subset of the nearest point as</p>
+
+<p><code class="language-plaintext highlighter-rouge">obs &lt;- nearest(obs,is="any rcm or gcm object")</code></p>
+
+<h2 id="subsetting">Subsetting</h2>
+<p>It is sometimes necessary to limit the range of data, either by selecting an interval in time or a subregion of the data. The method <code class="language-plaintext highlighter-rouge">subset</code> in the ‘esd’ tool extends the R-base <code class="language-plaintext highlighter-rouge">subset</code> method to ‘esd’ objects and classes and can be used to extract a time interval or a specific date, month, season, sub-group of stations, or a smaller region of a field. Its use is meant to be versatile and is based on the two arguments <code class="language-plaintext highlighter-rouge">it</code> and <code class="language-plaintext highlighter-rouge">is</code> to make a selection possible as <code class="language-plaintext highlighter-rouge">subset(x,it=NULL,is=NULL,...)</code></p>
+
+<p>The subsetting works for both fields and group of stations. In the examples below, Y can be a (group of) station(s) or a field object. In Example 3.5, the argument <code class="language-plaintext highlighter-rouge">it</code> is used to extract a specific time interval of the input data Y. It is also possible to select a subset according to a second data object as</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Select the same time period as covered by data object X</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">it</span><span class="o">=</span><span class="n">X</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Select the same spatial region/group of stations as in X</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">is</span><span class="o">=</span><span class="n">X</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+<p>or to combine several selection criteria as in Example 3.6. It is usually wise to use <code class="language-plaintext highlighter-rouge">subset</code> before other data processing (e.g. aggregate) to reduce computation time.</p>
+
+<p>Example 3.3.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load NCEP 2m air temperature</span><span class="w">
+</span><span class="n">t2m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t2m.NCEP</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-30</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">40</span><span class="p">,</span><span class="m">70</span><span class="p">))</span><span class="w">
+</span><span class="c1"># map the original field</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">t2m</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Regrid based on the new lon and lat values</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">regrid</span><span class="p">(</span><span class="n">t2m</span><span class="p">,</span><span class="nf">is=list</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="m">-5</span><span class="p">,</span><span class="m">15</span><span class="p">,</span><span class="n">by</span><span class="o">=</span><span class="m">0.5</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="m">55</span><span class="p">,</span><span class="m">65</span><span class="p">,</span><span class="n">by</span><span class="o">=</span><span class="m">0.5</span><span class="p">)))</span><span class="w">
+</span><span class="c1"># Map on the new grid</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Example 3.4.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Get NCEP data</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ncep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t2m.NCEP</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-15</span><span class="p">,</span><span class="m">45</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">35</span><span class="p">,</span><span class="m">70</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Display the latitude values</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lat</span><span class="p">(</span><span class="n">ncep</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Compute the grid resolution</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">diff</span><span class="p">(</span><span class="n">lat</span><span class="p">(</span><span class="n">ncep</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Display the longitude values</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lon</span><span class="p">(</span><span class="n">ncep</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Compute the resolution in the lon axis</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">diff</span><span class="p">(</span><span class="n">lon</span><span class="p">(</span><span class="n">ncep</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Get GCM data</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">gcm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t2m.NorESM.M</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-15</span><span class="p">,</span><span class="m">45</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">35</span><span class="p">,</span><span class="m">70</span><span class="p">))</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lat</span><span class="p">(</span><span class="n">gcm</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">diff</span><span class="p">(</span><span class="n">lat</span><span class="p">(</span><span class="n">gcm</span><span class="p">))</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lon</span><span class="p">(</span><span class="n">gcm</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">diff</span><span class="p">(</span><span class="n">lon</span><span class="p">(</span><span class="n">gcm</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Do the re-gridding # this line does not work</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">gcm.regrid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">regrid</span><span class="p">(</span><span class="n">gcm</span><span class="p">,</span><span class="w"> </span><span class="n">is</span><span class="o">=</span><span class="n">ncep</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Make sure that both longitudes are set to data line (i.e. greenwich=FALSE)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ncep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">g2dl</span><span class="p">(</span><span class="n">ncep</span><span class="p">,</span><span class="n">greenwich</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">gcm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">g2dl</span><span class="p">(</span><span class="n">gcm</span><span class="p">,</span><span class="n">greenwich</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Do the re-gridding</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">gcm.regrid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">regrid</span><span class="p">(</span><span class="n">gcm</span><span class="p">,</span><span class="w"> </span><span class="n">is</span><span class="o">=</span><span class="n">ncep</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lat</span><span class="p">(</span><span class="n">gcm.regrid</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lon</span><span class="p">(</span><span class="n">gcm.regrid</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Example 3.5.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="p">(</span><span class="n">Oslo</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Extract an interval:</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">Oslo</span><span class="p">,</span><span class="n">it</span><span class="o">=</span><span class="n">as.Date</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s2">"1883-01-01"</span><span class="p">,</span><span class="s2">"2013-12-05"</span><span class="p">)))</span><span class="w">
+</span><span class="c1"># Extract only the winter data (use aggregate for winter statistics)</span><span class="w">
+</span><span class="n">djf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">it</span><span class="o">=</span><span class="err">’</span><span class="n">djf</span><span class="err">’</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Extract data for May:</span><span class="w">
+</span><span class="n">may</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">it</span><span class="o">=</span><span class="err">’</span><span class="n">May</span><span class="err">’</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Example 3.6.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Retrieve stations across Scandinavian regions from the</span><span class="w">
+</span><span class="c1"># ECA$\&amp;$D dataset with a minimum of 50 years of data</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">station</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">"ecad"</span><span class="p">,</span><span class="n">cntr</span><span class="o">=</span><span class="s2">"norway"</span><span class="p">,</span><span class="n">nmin</span><span class="o">=</span><span class="m">50</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Show the selected stations including all available stations</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">cex</span><span class="o">=</span><span class="m">1.4</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">bg</span><span class="o">=</span><span class="s2">"pink"</span><span class="p">,</span><span class="n">showall</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Subset stations with altitude higher than 100m</span><span class="w">
+</span><span class="n">y1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="nf">is=list</span><span class="p">(</span><span class="n">alt</span><span class="o">=</span><span class="m">100</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Show the stations with elevation greater than 100m above sea level:</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span><span class="n">cex</span><span class="o">=</span><span class="m">1.4</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="s2">"darkred"</span><span class="p">,</span><span class="n">bg</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">showall</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Show the stations with elevation below 100m above sea level:</span><span class="w">
+</span><span class="n">y2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="nf">is=list</span><span class="p">(</span><span class="n">alt</span><span class="o">=</span><span class="m">-100</span><span class="p">))</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span><span class="n">cex</span><span class="o">=</span><span class="m">1.4</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="s2">"darkred"</span><span class="p">,</span><span class="n">bg</span><span class="o">=</span><span class="s2">"orange"</span><span class="p">,</span><span class="n">showall</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Figure 11: Maps of available weather stations from the ECA&amp;D with a minimum of 50 year recorded values including a sub-selection of stations showing higher (b) and lower (c) elevation than 100m a.s.l.</p>
+
+<h2 id="35-combining-and-synchronising">3.5 Combining and synchronising</h2>
+<p>It is important to combine different data objects and make sure that they are synchronised before the analysis can be made to identify links and dependencies. It may also be necessary to combine several station objects into a group of objects, for instance in order to perform a canonical correlation analysis (CCA). The method is <code class="language-plaintext highlighter-rouge">combine</code>. The function <code class="language-plaintext highlighter-rouge">matchdate</code> is used to synchronise any object <code class="language-plaintext highlighter-rouge">x</code> with the time index specified by <code class="language-plaintext highlighter-rouge">it</code> as <code class="language-plaintext highlighter-rouge">matchdate(x,it=y)</code>. <code class="language-plaintext highlighter-rouge">matchdate()</code> will return the subset of <code class="language-plaintext highlighter-rouge">x</code> that matches the time index of <code class="language-plaintext highlighter-rouge">y</code>.</p>
+
+<h2 id="36-anomalies">3.6 Anomalies</h2>
+<p>Geophysical data tends to have a strong seasonal cycle, and often the seasonal variations are of less interest than year-to-year variations. Anomalies are the variations after the seasonal cycle has been removed. The method ‘anomaly’ can be applied to stations and field objects, for daily, monthly, and seasonal data. The converse is ‘climatology’.</p>
+
+<h2 id="37-aggregate-monthly-seasonal-and-annual-statistics">3.7 Aggregate: monthly, seasonal and annual statistics</h2>
+<p>It is also convenient to compute trends on annual values rather than daily values, as the latter are noisy. To do so the S3-built in method ‘aggregate’ is used which allows splitting the data into subsets (e.g. years) and computes summary statistics for each subset (e.g. maximum values) as <code class="language-plaintext highlighter-rouge">aggregate(x,by=year,FUN=’max’,...)</code></p>
+
+<p>Aggregate has been extended to deal with ‘esd’ objects, and returns the result as an identical ‘esd’ object with updates. Classes and attributes are updated accordingly (see Example 3.7). The aggregate function can also be used to create coarser grids where the boxes contain spatially aggregated values from a higher grid resolution (Example 3.8).</p>
+
+<h2 id="38-spatial-averaging-of-field-objects---aggregatearea">3.8 Spatial averaging of field objects - aggregate.area</h2>
+<p>It is interesting to investigate if there are any global signals affecting the local climate. For this purpose, the ‘esd’ package makes it convenient to compute statistics on spatial averaging of an
+object over a specific spatial domain or an area of interest. The function <code class="language-plaintext highlighter-rouge">aggregate.area()</code> is used to compute an area aggregate (e.g. average means, maximum, sum, …) taking into account that the grid box area varies with latitude. The following equations are used:
+
+
+I
+J
+1 X
+X
+X
+¯
+x =
+(ϕ
+ϕ
+I
+
+i xi,j )/
+
+i=1
+j=1
+ϕi = cos(2 π lati / 360)
+where i and j are indices in the longitude and latitude respectively, and lati is the latitude value at point i.</p>
+
+<p><code class="language-plaintext highlighter-rouge">aggregate.area(x,is=NULL,it=NULL,FUN=’sum’,na.rm=TRUE,smallx=FALSE)</code></p>
+
+<p>Example 3.9 shows the spatial averaging of the projected global mean temperature from the CMIP5 NorESM-M RCP4.5 experiment.</p>
+
+<p>It is also convenient to compare the global mean temperature as produced by several GCMs (Figure 12). A demo script is made available in the demo ‘esd’ package called “global tas anomaly.R”. The script computes the global mean anomaly temperature for all CMIP3 and CMIP5 experiments provided by the KNMI Climate-Explorer web portal. All GCM data need to be downloaded locally before the script is run. The results can then be compared to the Figure 1 of Knutti and Sedl´aˇcek (2013) which shows the evolution of the global temperature change (mean and one standard deviation as shading) relative to 1986–2005 for the SRES scenarios run by the CMIP3 and the RCP scenarios run by the CMIP5 experiments. This figure gives a good summary of the global mean warming signal predicted by both experiments and the inter-model spread. Note that the shaded area would be different if it was based on the ensemble model outputs for each CMIP experiment as the authors gave a confidence interval based on one standard deviation of the ensemble mean.</p>
+
+<p>Figure 12: Global mean temperature change for the SRES scenarios run by CMIP3 and the RCP scenarios run by CMIP5 experiments, respectively, relative to the period 1986-2005. The shaded area shows one standard deviation from the mean based on all scenarios for each experiment.</p>
+
+<p>Example 3.7.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load data for "Bjornholt" station</span><span class="w">
+</span><span class="n">data</span><span class="p">(</span><span class="n">bjornholt</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Check the class of the object</span><span class="w">
+</span><span class="nf">class</span><span class="p">(</span><span class="n">bjornholt</span><span class="p">)</span><span class="w">
+</span><span class="c1">## [1] "station" "day"</span><span class="w">
+</span><span class="s2">"zoo"</span><span class="w">
+</span><span class="c1"># Aggregate on annual maximum values</span><span class="w">
+</span><span class="n">bjornholt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">annual</span><span class="p">(</span><span class="n">bjornholt</span><span class="p">,</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">max</span><span class="err">’</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Check the class of the aggregated object</span><span class="w">
+</span><span class="nf">class</span><span class="p">(</span><span class="n">bjornholt</span><span class="p">)</span><span class="w">
+</span><span class="c1">## [1] "station" "annual"</span><span class="w">
+</span><span class="s2">"zoo"</span><span class="w">
+</span><span class="c1"># Plot the results</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">bjornholt</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Figure 13: Plotting the annual maximum values of daily precipitation recorded at ‘Bjornholt’ weather station.</p>
+
+<p>Example 3.8.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load 2m air temperature from NCEP reanalysis on a resoltuion of 2.5 deg.</span><span class="w">
+</span><span class="n">t2m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t2m.NCEP</span><span class="p">()</span><span class="w">
+</span><span class="c1"># Do the spatial aggregation</span><span class="w">
+</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">aggregate</span><span class="p">(</span><span class="n">t2m</span><span class="p">,</span><span class="n">by</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">360</span><span class="p">,</span><span class="n">by</span><span class="o">=</span><span class="m">10</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">360</span><span class="p">,</span><span class="n">by</span><span class="o">=</span><span class="m">10</span><span class="p">)),</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">mean</span><span class="err">’</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Map the results</span><span class="w">
+</span><span class="n">map</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Figure 14: Maps of the original (a) and aggregated (b) spatial field of NCEP 2m air temperature.</p>
+
+<p>Example 3.9.</p>
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load 2m air temperature from the NorESM.M global climate model</span><span class="w">
+</span><span class="n">t2m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t2m.NorESM.M</span><span class="p">()</span><span class="w">
+</span><span class="c1"># Compute the areal mean over the whole domain</span><span class="w">
+</span><span class="n">T2m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">aggregate.area</span><span class="p">(</span><span class="n">t2m</span><span class="p">,</span><span class="n">FUN</span><span class="o">=</span><span class="err">’</span><span class="n">mean</span><span class="err">’</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Plot the annual aggregated values</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">annual</span><span class="p">(</span><span class="n">T2m</span><span class="p">),</span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">11.5</span><span class="p">,</span><span class="m">17.5</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Figure 15: Global average of 2m air temperature from the NorESM global climate model. The error bars show 2 times the standard deviation computed based on observations.</p>
+
+<h2 id="39-transformations-and-conversions-as">3.9 Transformations and conversions: as.</h2>
+<p>A range of transformations between different type of objects can be done with the ‘as’ method.</p>
+
+<p>Table 3: The ‘esd’ extension of the <code class="language-plaintext highlighter-rouge">as.</code> method. Some of these are the same as some other functions, e.g. <code class="language-plaintext highlighter-rouge">annual</code> and <code class="language-plaintext highlighter-rouge">as.annual</code></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.field</td>
+      <td>as.field.default</td>
+      <td>as.field.zoo</td>
+      <td>as.field.station</td>
+    </tr>
+    <tr>
+      <td>as.field</td>
+      <td>as.field.comb</td>
+      <td>as.field.eof</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.4seasons</td>
+      <td>as.4seasons.day</td>
+      <td>as.4seasons.default</td>
+      <td>as.4seasons.station</td>
+    </tr>
+    <tr>
+      <td>as.4seasons.field</td>
+      <td>as.4seasons.spell</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>as.seasons</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.fitted.values</td>
+      <td>as.fitted.values.ds</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.monthly</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.annual</td>
+      <td>as.annual.default</td>
+      <td>as.annual.integer</td>
+      <td>as.annual.numeric</td>
+    </tr>
+    <tr>
+      <td>as.annual.spell</td>
+      <td>as.annual.yearqtr</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>as.original | as.original.data | as.original.data.ds | as.original.data.station | 
+as.original.station</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.pattern</td>
+      <td>as.pattern.cca</td>
+      <td>as.pattern.corfield</td>
+      <td>as.pattern.ds</td>
+    </tr>
+    <tr>
+      <td>as.pattern.eof</td>
+      <td>as.pattern.field</td>
+      <td>as.pattern.mvr</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.anomaly</td>
+      <td>as.anomaly.default</td>
+      <td>as.anomaly.field</td>
+      <td>as.anomaly.station</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.appended</td>
+      <td>as.appended.ds.comb</td>
+      <td>as.appended.eof.comb</td>
+      <td>as.appended.field.comb</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.eof</td>
+      <td>as.eof.appendix</td>
+      <td>as.eof.comb</td>
+      <td>as.eof.eof</td>
+    </tr>
+    <tr>
+      <td>as.eof.field</td>
+      <td>as.eof.zoo</td>
+      <td>as.eof.list</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.pca</td>
+      <td>as.pca.ds</td>
+      <td>as.pca.station</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.calibrationdata</td>
+      <td>as.calibrationdata.ds</td>
+      <td>as.calibrationdata.station</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.residual</td>
+      <td>as.residual.ds</td>
+      <td>as.residual.station</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.climatology</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.comb</td>
+      <td>as.comb.eof</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.stand</td>
+      <td>as.stand.station</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.ds</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.station</td>
+      <td>as.station.list</td>
+      <td>as.station.eof</td>
+      <td>as.station.field</td>
+    </tr>
+    <tr>
+      <td>as.station.ds</td>
+      <td>as.station.spell</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.station.pca</td>
+      <td>as.station.zoo</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>as.anomaly.zoo</td>
+    </tr>
+  </tbody>
+</table>
+

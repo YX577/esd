@@ -1,0 +1,152 @@
+<h1 class="no_toc" id="utilities">Utilities</h1>
+
+<p>A short and single line in R produces a complex figure with various information: the generic ‘plot’ yields a plot as seen in the left panel of Figure 4 or can make a graphical presentation of downscaled results that both shows the numbers as well as their quality. How is that possible?
+The trick is to define different data object types, known as ‘classes’ in R and define a specific data reference syntax (DRS) or common information model (CIM) that includes the meta-data in the working computer memory as well as in files stored on discs. This is all done automatically on-the-fly behind the scene, so that the user does not have to worry about these matters (it is of course possible to change the meta-data to e.g. correct for potential errors).
+The command library(‘esd’) must be given at any new open R session. The R-package can be installed directly from Github (https://github.com/metno/esd) or
+Figshare for Mac/Linux11 and Windows12)</p>
+
+<details open="">
+  <summary class="text-delta">
+    Table of contents
+  </summary>
+<ol id="markdown-toc">
+  <li><a href="#retrieving-data-io" id="markdown-toc-retrieving-data-io">Retrieving data: I/O</a>    <ol>
+      <li><a href="#function-retrieve" id="markdown-toc-function-retrieve">Function <code class="language-plaintext highlighter-rouge">retrieve()</code></a></li>
+      <li><a href="#function-station" id="markdown-toc-function-station">Function <code class="language-plaintext highlighter-rouge">station()</code></a></li>
+      <li><a href="#quick-search---function-selectstation" id="markdown-toc-quick-search---function-selectstation">Quick search - Function <code class="language-plaintext highlighter-rouge">select.station()</code></a></li>
+    </ol>
+  </li>
+  <li><a href="#data-structures" id="markdown-toc-data-structures">Data structures</a>    <ol>
+      <li><a href="#example-22-shows-some-of-the-classes-used-in-esd" id="markdown-toc-example-22-shows-some-of-the-classes-used-in-esd">Example 2.2 shows some of the classes used in ‘esd’.</a></li>
+    </ol>
+  </li>
+  <li><a href="#function-summary" id="markdown-toc-function-summary">Function <code class="language-plaintext highlighter-rouge">summary()</code></a></li>
+  <li><a href="#data-visualisation" id="markdown-toc-data-visualisation">Data visualisation</a>    <ol>
+      <li><a href="#function-plot" id="markdown-toc-function-plot">Function <code class="language-plaintext highlighter-rouge">plot()</code></a></li>
+      <li><a href="#function-map" id="markdown-toc-function-map">Function <code class="language-plaintext highlighter-rouge">map()</code></a></li>
+      <li><a href="#function-vec" id="markdown-toc-function-vec">Function <code class="language-plaintext highlighter-rouge">vec()</code></a></li>
+      <li><a href="#info-graphics" id="markdown-toc-info-graphics">Info-graphics</a></li>
+    </ol>
+  </li>
+</ol>
+
+</details>
+
+<h2 id="retrieving-data-io">Retrieving data: I/O</h2>
+<p>There are different types of data that can be handled by the ‘esd’ tool: station data, gridded data, and (storm) trajectories. Station data contain meteorological observations recorded at weather (or hydrological) stations, while gridded data can comprise various analyses (e.g. E-OBS gridded version of the European and Climate Assessment data set), reanalyses (e.g. NCEP, ERA, …) or global/regional climate model results (e.g. CMIP3/5 experiment). Trajectories are
+mainly used for analysis of storm tracks (e.g. IMILAST13). There are two main methods for retrieving data in the ‘esd’ tool: ‘station’ and ‘retrieve’.
+It is also possible to read data using the R-built in functions and convert it to esd data format. This requires more effort from the user using the ‘esd’ pre-defined functions <code class="language-plaintext highlighter-rouge">as.station</code>, <code class="language-plaintext highlighter-rouge">as.field</code>), and <code class="language-plaintext highlighter-rouge">as.trajectory</code>. The package comes with a set of sample data mainly included for demonstration purposes,
+testing, or troubleshooting. For gridded data, these are filtered data (mainly for reducing the size of the data objects) and should not be used as predictors in the actual analysis. For instance, air temperature reanalysis data are stored as a set of 20 empirical orthogonal functions (EOFs) with global coverage, which are then transformed to a field object upon a retrieval. However, the sample station data can be used without restrictions and corresponds to observed values at a specific location (e.g. <code class="language-plaintext highlighter-rouge">data(Oslo)</code> or <code class="language-plaintext highlighter-rouge">nacd=station(src='nacd')</code>).</p>
+
+<p>11http://figshare.com/articles/esd_for_Mac_amp_Linux/1160493
+12http://figshare.com/articles/esd_for_windows/1160494
+13http://www.proclim.ch/imilast/index.html</p>
+
+<h3 id="function-retrieve">Function <code class="language-plaintext highlighter-rouge">retrieve()</code></h3>
+<p>The ‘retrieve’ is designed to read data from NetCDF files following the standard Climate and Forecast (‘CF’) conventions and ordered on a longitude-latitude grid. The latter could be regular or irregular grid (e.g. the output of the Weather Research and Forecasting model (WRF) or any outputs on a rotated grid from RCMs). The function ‘retrieve’ also performs quick checks of the data itself to verify that the meta data and data are consistent. For instance, in case the frequency of the data is missing, <code class="language-plaintext highlighter-rouge">retrieve()</code> will try to detect the frequency automatically form the data itself. The function <code class="language-plaintext highlighter-rouge">retrieve</code> returns two types of objects depending on the type of the spatial grid. For instance, data stored on a regular grid is returned as <code class="language-plaintext highlighter-rouge">field</code> objects including attributes containing meta data, and data stored on irregular grid - such as rotated longitude-latitude grids - are returned as a <code class="language-plaintext highlighter-rouge">station</code> objects.</p>
+
+<p>The function <code class="language-plaintext highlighter-rouge">retrieve()</code> has also been adapted to read global climate data from the CMIP3/5 experiments, most of the global reanalysis such as those provided by the European Centre for Medium-Range Weather Forecasts (ECMWF) known as ERA-40 and ERA-INTERIM, the National Center for Environmental Prediction (NOAA) known as NCEP/NCAR reanalysis, the Japan Meteorological Agency (Japanese Reanalysis JRA-25,55), and the NASA GSFC Global Modeling and Assimilation Office (GMAO) known as MERRA reanalysis. A full overview of all available reanalysis can be found at http://reanalysis.org/atmosphere/overview-current-reanalyses.
+As for now, <code class="language-plaintext highlighter-rouge">retrieve()</code>, does not display a list of missing attributes that are mandatory for further post-processing of the data. The user must add the missing attributes manually. The strength of <code class="language-plaintext highlighter-rouge">retrieve()</code> is that it can read and return formatted objects with common attributes for post-processing, visualising and making outputs comparable (e.g. re-gridding the field objects into the same grid resolution). Basically, all reanalysis, general circulation models (GCMs), and regional climate models (RCMs) can be read using the ‘esd’ tool and further combined into one object, or analysed, albeit with some limitations due to the size of
+the returned object.</p>
+
+<h3 id="function-station">Function <code class="language-plaintext highlighter-rouge">station()</code></h3>
+<p>The package ‘esd’ includes the function ‘station’ for obtaining historical climate data by querying various web portals, for instance, the MET Norway archive (KDVH) provided by the Norwegian Meteorological Institute14. Data from MET climate web service ‘eKlima’ needs to be adapted manually, the Global Historical Climate Network (GHCN, (Peterson and Vose,1997)) provided by the American National Climatic Data Center15, and the European Climate
+Assessment and Dataset (ECA&amp;D, (Klein Tank et al., 2002)) made available by the Royal Netherlands Meteorological Institute (KNMI) (http://eca.knmi.nl/). Some of the data that is 14http://eklima.met.no; however, this function only works within the firewall included in the package has been pre-formatted within the ‘clim.pact’ package and adapted to meet the new ‘esd’ data format requirements.</p>
+
+<p>15http://www1.ncdc.noaa.gov/pub/</p>
+
+<p>SOURCE(S) :  ECAD/GHCNM/METNOD/METNOM/NACD/NORDKLIM
+T2M/
+14632
+2014 / 1773
+ESD package − map.station() − MET Norway 2014 (www.met.no)
+Figure 1: Map of available weather stations recording temperature that are included in the meta-data
+of the ‘esd’ package.</p>
+
+<h3 id="quick-search---function-selectstation">Quick search - Function <code class="language-plaintext highlighter-rouge">select.station()</code></h3>
+<p>The sample data includes also a meta-data object (<code class="language-plaintext highlighter-rouge">stationmeta</code>) that can be loaded directly and contains meta data such as name of the location (<code class="language-plaintext highlighter-rouge">loc</code>) and its standard ientification number (<code class="language-plaintext highlighter-rouge">stid</code>), geographical coordinates such as longitude (<code class="language-plaintext highlighter-rouge">lon</code>), latitude (<code class="language-plaintext highlighter-rouge">lat</code>), and altitude (<code class="language-plaintext highlighter-rouge">alt</code>), country name (<code class="language-plaintext highlighter-rouge">country</code>), parameter name (<code class="language-plaintext highlighter-rouge">param</code>) of recorded weather variables (e.g. temperature and precipitation), data source (<code class="language-plaintext highlighter-rouge">src</code>) or provider for thousands of stations all over the world (Figures 1 and 2).
+These meta-data have been imported from existing meta data from the different data source providers. It has to be noted also that most of the available stations are managed by the World Meteorological Organisation (WMO) and made available by the American National Climate Data Centre (NCDC) for scientific research only. The meta data has been merged from the different sources mentioned earlier. Also, other additional data sources can be easily included into the package.</p>
+
+<p>Figure 2: Map of available weather stations recording precipitation that are included in the meta-data of the ‘esd’ package.</p>
+
+<p>There are two ways of obtaining station data using <code class="language-plaintext highlighter-rouge">station()</code> method. The first option, which we recommend, is to select a subset of stations from the meta data using the function <code class="language-plaintext highlighter-rouge">select.station()</code> from a set of criteria. Among these criteria, the minimum length of the recorded data (‘nmin’) can be specified to get, for instance, a subset of stations recording for at least a minimum number of (e.g. 100) years of data (e.g. <code class="language-plaintext highlighter-rouge">select.station(nmin=100)</code>). Thus, a subsample of the meta data is returned and can be checked for duplications of stations from the various sources. Afterwards, users can start downloading the data for the selected stations. It has to be mentioned that the downloading process for the GHCN and ECA&amp;D is different as the data is stored differently. For the GHCN data sets, each station is stored separately and a direct retrieval can be made. We highly recommend that users perform a prior selection of stations for the GHCN data sets before starting the downloading process. For the ECA&amp;D data sets on the other hand, all stations are downloaded and stored locally as zip files at first call, after which data is extracted for the selection of stations. Other data sets, such as the NACD (Frich et al., 1996), NARP (Førland ), and Nordklim (Tuomenvirta et al., 2001) are stored entirely in ‘esd’ (only holds monthly values of a limited set).</p>
+
+<p>The ‘station’ method can retrieve station data from a range of different sources, many over the web (GHCN and ECA&amp;D). Example 2.1 demonstrates how to select, retrieve and plot temperature observations from a single station. The ‘esd’ tool holds meta-data for various data sources, which makes it quick and easy to
+search for weather data recorded at stations according to the parameter, the geographical location (region, country, and coordinates (single or a range of longitude and latitude values) and altitude, and time interval.</p>
+
+<h2 id="data-structures">Data structures</h2>
+<p>Most data objects handled by ‘esd’ are typically time series, and hence based on the <code class="language-plaintext highlighter-rouge">zoo</code> class. The <code class="language-plaintext highlighter-rouge">zoo</code> class extends the tseries class from regular to irregular time series. In the ‘esd’ tool, additional categories or classes have been defined dealing with temporal resolution distinguishing daily (‘day’), monthly (<code class="language-plaintext highlighter-rouge">month</code>), seasonal (<code class="language-plaintext highlighter-rouge">season</code>), and annual (<code class="language-plaintext highlighter-rouge">annual</code>) data (as temporal classes) and spatial resolution distinguishing location (<code class="language-plaintext highlighter-rouge">station</code>) and field 
+(<code class="language-plaintext highlighter-rouge">field</code>) classes.
+Data on sub-daily scales may be represented in the ‘day’ class but the ‘esd’ tool has not been tested yet for this time scale. The way R handles different classes and objects can sometimes be confusing. The first element in a list of different classes is used to identify the appropriate method to be used for that specific object. For instance, if a data object belongs to the classes (‘field’,‘zoo’), then, appropriate methods for ‘field’ objects are used rather than those for
+the ’zoo’ objects. Different types of data objects are processed and handled differently, and the way ‘esd’ keeps track of the different types is through the so-called ‘S3-method’ and classes. The ‘esd’ tool follows the same R programming functionalities and uses the first element of the class of an object to define the appropriate method to be used. The built-in R functions <code class="language-plaintext highlighter-rouge">class</code> and <code class="language-plaintext highlighter-rouge">inherits</code> are used to check whether an object inherits from any of the classes specified in the ‘esd’ package.</p>
+
+<h3 id="example-22-shows-some-of-the-classes-used-in-esd">Example 2.2 shows some of the classes used in ‘esd’.</h3>
+
+<p>The different data objects come bundled with relevant meta-data, stored as data attributes. These are shown using the <code class="language-plaintext highlighter-rouge">str</code>*ucture function, as displayed in Example 2.3 for a station object.</p>
+
+<p>The various attributes have different functions, e.g. for handling the data, traceability, identification, and visualisation. The idea is that they are based on a standard terminology for which the terms are commonly agreed on and follow standard definitions. A common core set of attributes will make it easier to share data and methods. The attribute <code class="language-plaintext highlighter-rouge">history</code> contains the call(s) (<code class="language-plaintext highlighter-rouge">call</code>), time stamp(s), and session info that have been used to create and process the data itself.</p>
+
+<h2 id="function-summary">Function <code class="language-plaintext highlighter-rouge">summary()</code></h2>
+<p>The S3 method ‘summary’ has been extended to the classes defined in ‘esd’ in order to
+provide more tailor-made information. Example 2.4 shows summary statistics for each calendar
+month of a daily station object.</p>
+
+<p>Table 1: Data objects in ‘esd’ are determined by a set of classes, listed in this table. This may
+be extended in the future to include radiosonde and radar data objects.
+‘station’
+Class defining station objects. Can be single or multiple stations with daily,
+monthly, seasonal or annual temporal resolution.
+‘spell’
+Looks similar to the station class, but the events are irregularly spaced and
+contains both duration of wet/hot as dry/cold spells. The distinction also
+enables ‘esd’ to apply different plotting and analysis methods than those for
+regular stations.
+‘field’
+Currently represents time series of 2D variables, but may in principle contain
+any number of spatial dimensions.
+‘eof’
+Class defining an EOF describing the spatial patterns (EOFs), the temporal
+variations (PCs), and the eigenvalues.
+‘pca’
+Class defining a PCA is similar to the eof class, but allows for irregular grid
+of stations.
+‘cca’
+Class that defines the results of a CCA, containing a pair of patterns and the
+canonical correlations.
+‘ds’
+Class for DS results.
+‘dsensemble’
+Class for downscaled ensembles.
+‘diagnose’
+Class for diagnostic results.
+‘trajectory’
+Class for trajectories.
+‘xval’
+Class for cross-validation.
+‘xsection’
+Class for cross-sections (Hovmuller diagrams).
+‘mvr’
+Class for multivariate regression (MVR) objects, which hold the matrices that
+maps one data set onto the data space of another.</p>
+
+<h2 id="data-visualisation">Data visualisation</h2>
+<p>The main data visualisation is provided through plot and map methods, but there are other more specific methods for producing additional graphs.</p>
+<h3 id="function-plot">Function <code class="language-plaintext highlighter-rouge">plot()</code></h3>
+<p>The ‘plot’ method in ‘esd’ extends the S3 plot methods from package ‘graphics’ to new ‘esd’ classes (Table 1). ‘plot(x)’ and ‘plot.station(x)’ are equivalent if ‘x’ is an object of class ‘station’.
+Various plotting outputs are generated depending on the class of the objects used as inputs. For instance, the ‘plot.station(x)’ function produces a figure based on the default ‘graphics’ and ‘zoo’ plots but adapted for the station object (Figure 4a). For some classes, plot can produce several or a combination of plots giving more description of the output. The argument ’plot.type’ is also used to distinguish between single or multiple plots in one window. The ‘plot’ function also inherits all graphical parameters from ‘par’ with additional parameters used by ‘esd’. An example of the function ‘plot’ applied to a station object is shown in Example 2.5 and Figure 4a. Although the plot itself gets more complicated for EOFs, the syntax remains as simple as for the station object (Example 2.6, Figure 5).</p>
+
+<h3 id="function-map">Function <code class="language-plaintext highlighter-rouge">map()</code></h3>
+<p>The function ‘map’ is also an S3 built method and used to produce a map of geographical and geophysical data points and gridded data. ‘map’ can be seen as a spatial plotting method, while plot is mainly used for time series. Unlike ‘plot’, ‘map’ is proper to ‘esd’ and is an S3 method and do not extend the existing ‘map’ function from package ‘maps’ (http://CRAN.R-project.org/package=maps), which too works for the different ‘esd’ objects. When applied to one single station, map plots its location (Example 2.5, Figure 4b).</p>
+
+<h3 id="function-vec">Function <code class="language-plaintext highlighter-rouge">vec()</code></h3>
+<p>The function vec plots vectors of a 2D flow field (Example 2.7, Figure 6).</p>
+
+<p>Figure 6: The output of the example with ‘vec’. In this example, there are different plotting windows for the vectors and the underlying map, but this can be adjusted in the arguments of ‘vec’.</p>
+
+<h3 id="info-graphics">Info-graphics</h3>
+<p>One of the purposes of ‘esd’ is to easily produce visualisation and graphics to bring out new aspects of the information embedded in the data. The development of the info-graphics in this tool has also been inspired by Spiegelhalter et al. (2011), in order to distill the essence of the
+analysis. 
+The information stored in climate data can be extracted in various ways, with emphasis on different aspects, as can be seen in Example 2.8 and Figure 7. A <code class="language-plaintext highlighter-rouge">cumugram()</code> is shown, displaying the cumulative average value of some variable starting from the first day of the year. The results for the Oslo temperature in this example shows that 2014 has been the warmest year on record since the summer. A ‘rainbow structure’ is consistent with a gradual increase in the temperature.
+The second diagram, ‘wheel’, emphasises the time of the year when the most extreme events have taken place, and ‘climvar’ to the right shows how the year-to-year variance varies with season with a minimum in late summer. The ‘diagram’ method can also be used to view the data by comparing day-by-day values of the present temperature with those of the previous years. The figure shows that there have been some exceptionally mild autumn temperatures in 2014. Other functions for making info-graphics include <code class="language-plaintext highlighter-rouge">vis.*</code>, which make alternative graphics output displaying different information. Trends can be estimated by linear regression using the simple ‘trend’ function. An alternative trend analysis can be done using the function ‘vis.trends’ which estimates linear regressions for sliding periods of various lengths (Example 2.9, Figure 8). The results are presented visually with the strength of the trends shown as a colour scale on a grid where the x- and y-axes represent the starting point and the length of each period, respectively. Periods with statistically significant trends are marked with black outlines. The advantage of <code class="language-plaintext highlighter-rouge">vis.trends</code> is that it shows trends of various time scales, considering all variations of start- and end-points. The longest period is found in the upper left corner, representing the full length of the time series. The most recent period is shown in the bottom right corner. As demonstrated in Example 2.9,
+the strength and significance of estimated trends are sensitive to the period considered. The multiple period trend analysis is therefore a more robust alternative to single period trend fitting.</p>
+

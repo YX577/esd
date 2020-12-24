@@ -2,10 +2,10 @@
 nav_order: 1
 ---
 
-## esd R tool
+# esd R tool
 
 We present a tool, the R-package‘esd’, made freely available by the Norwegian MeteorologicalInstitute (MET Norway) for use by the climate community that: 
- - was primarily built for empirical-statistical downscaling of climate information and has been extended to search, process, dissect,and analyse meteorological and climatological data (localas well as global climate data sets).  
+ - was primarily built for empirical-statistical downscaling of climate information and has been extended to search, process, dissect,and analyse meteorological and climatological data (localas well as global climate data sets).
  - consists of i) retrieving and manipulating large samples ofmeteorological, climate and model datafrom various sources, ii) searching, dissecting and displaying the information in the data, (iii) andcomputing a range of analyses. The acronym‘esd’can be associated with both ‘Easy & SimpleData’ processing and ‘Empirical-Statistical downscaling’. 
  - provides simple and intuitive ways forreading data from weather station, gridded data sets, as well as trajectory data such as cyclonepaths. 
 
